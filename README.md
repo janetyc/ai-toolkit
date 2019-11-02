@@ -2,6 +2,9 @@
 # AI Toolkits - flask backend
 ## How to run a backend server
 
+## Deploy to Herkoku
+
+
 ## DB Migration
 ### How to handle database migrations (by [Flask-Migrate](http://flask-migrate.readthedocs.io/en/latest/) )
 - please make sure "environment variables ENV=DEVELOPMENT", which means local database and local server
