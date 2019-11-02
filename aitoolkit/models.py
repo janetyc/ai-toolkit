@@ -1,36 +1,5 @@
 from aitoolkit import db
 
-# class Mtask(db.Model):
-#     __tablename__ = 'mtask'
-
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     created_user = db.Column(db.Text())
-
-#     verified_string = db.Column(db.Text())
-#     hit_id = db.Column(db.Text())
-#     worker_id = db.Column(db.Text())
-#     assignment_id = db.Column(db.Text())
-
-#     created_time = db.Column(db.DateTime())
-#     accepted_time = db.Column(db.DateTime())
-#     submited_time = db.Column(db.DateTime())
-
-#     def __init__(self, created_user, verified_string, hit_id, worker_id, assignment_id):
-#         self.created_user = created_user
-
-#         self.verified_string = verified_string
-#         self.hit_id = hit_id
-#         self.worker_id = worker_id
-#         self.assignment_id = assignment_id
-
-#         self.created_time = datetime.utcnow()
-#         self.accepted_time = None
-#         self.submited_time = None
-
-#     def __repr__(self):
-#         return '<Mtask %r>' % self.id
-
-
 class Task(db.Model):
     __tablename__ = 'task'
 

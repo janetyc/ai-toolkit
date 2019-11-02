@@ -1,8 +1,6 @@
-# AI Toolkits
 
-## Development Logs
-- first setup for ai toolkit web application (2019.07.25)
-
+# AI Toolkits - flask backend
+## How to run a backend server
 
 ## DB Migration
 ### How to handle database migrations (by [Flask-Migrate](http://flask-migrate.readthedocs.io/en/latest/) )
@@ -50,3 +48,12 @@
 > heroku run python manage.py db stamp <revision> 
 > 
 > heroku run python manage.py db upgrade
+
+# AI-toolkit - react frontend
+## use [react-p5js](https://github.com/atorov/react-p5js)
+
+
+## Development Logs
+- first setup for ai toolkit web application (2019.07.25)
+- flask backend + react frontend (use react-p5js) (2019.07.28)
+- integrate Albert's frontend react (2019.11.02)

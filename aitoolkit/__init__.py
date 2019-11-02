@@ -3,7 +3,7 @@ import os
 import config
 from flask import Flask, url_for, redirect, request
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_cors import CORS, cross_origin
 
 db = SQLAlchemy()
 
@@ -11,7 +11,8 @@ db = SQLAlchemy()
 # http://flask.pocoo.org/docs/1.0/patterns/appfactories/#app-factories
 def create_app():
 
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='../reactapp/build', static_folder='../reactapp/build/static')
+    CORS(app)
     env = os.getenv('ENV')
 
     if env == "DEVELOPMENT":
@@ -32,10 +33,8 @@ def create_app():
     # why blueprints http://flask.pocoo.org/docs/1.0/blueprints/
     app.register_blueprint(views)
 
-
     db.app = app
     db.init_app(app)
-
 
     with app.app_context():
         # Extensions like Flask-SQLAlchemy now know what the "current" app
