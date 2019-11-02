@@ -11,7 +11,7 @@ db = SQLAlchemy()
 # http://flask.pocoo.org/docs/1.0/patterns/appfactories/#app-factories
 def create_app():
 
-    app = Flask(__name__, template_folder='../reactapp/build', static_folder='../reactapp/build/static')
+    app = Flask(__name__, template_folder='build', static_folder='build/static')
     CORS(app)
     env = os.getenv('ENV')
 

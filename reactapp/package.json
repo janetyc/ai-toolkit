@@ -1,5 +1,6 @@
 {
-  "name": "reactapp",
+  "name": "aitoolkit",
+  "homepage": "http://localhost:5000",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,7 +16,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "start": "serve -s build",
-    "build": "react-scripts build",
+    "build": "react-scripts build && mv build ../aitoolkit",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -33,6 +34,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy": "http://localhost:5000"
+  }
 }
