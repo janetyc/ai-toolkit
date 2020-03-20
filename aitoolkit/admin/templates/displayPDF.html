@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="center">
+    <canvas id="the-canvas" style="border:1px  solid black"></canvas>
+    
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+
+<script id="script">
+  //
+  // If absolute URL from the remote server is provided, configure the CORS
+  // header on that server.
+  //
+  var url = '/static/non-react/papers/paper1.pdf';
+  //
+  // The workerSrc property shall be specified.
+  //
+
+var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+// The workerSrc property shall be specified.
+pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+  //
+  // Asynchronous download PDF
+  //
+  var loadingTask = pdfjsLib.getDocument(url);
+  loadingTask.promise.then(function(pdf) {
+    //
+    // Fetch the first page
+    //
+    pdf.getPage(1).then(function(page) {
+      var scale = 1.5;
+      var viewport = page.getViewport({ scale: scale, });
+      //
+      // Prepare canvas using PDF page dimensions
+      //
+      var canvas = document.getElementById('the-canvas');
+      var context = canvas.getContext('2d');
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      //
+      // Render PDF page into canvas context
+      //
+      var renderContext = {
+        canvasContext: context,
+        viewport: viewport,
+      };
+      
+      page.render(renderContext);
+      page.getTextContent().then(function (textContent) {
+                var textItems = textContent.items;
+                var finalString = "";
+                console.log(textItems);
+                // Concatenate the string of the item to the final string
+                for (var i = 0; i < textItems.length; i++) {
+                    var item = textItems[i];
+
+                    finalString += item.str + " ";
+                }
+
+                // Solve promise with the text retrieven from the page
+                console.log(finalString);
+            });
+    //   page.getTextContent().then(function(textContent){
+    //             var page_text = "";
+    //             var last_block = null;
+    //             // console.log(textContent.items);
+    //             for(j = 0; j < textContent.items.length; j++){
+    //                 var block = textContent.items[j];
+    //                 console.log(block);
+    //                 if(last_block != null && last_block.str[last_block.str.length - 1] != ' '){
+    //                     if(block.x < last_block.x){
+    //                         page_text += "\r\n";
+    //                     }else if(last_block.y != block.y && (last_block.str.match(/^(\s?[a-zA-Z])$|^(.+\s[a-zA-Z])$/) == null )){
+    //                         page_text += '\r\n';
+    //                     }
+    //                 }
+
+    //                 page_text += block.str;
+    //                 last_block = block;
+    //             }
+                
+    //             console.log(page_text);
+    //         });
+    });
+  });
+</script>
+
+<script>
+$(function(){
+	
+});
+
+</script>
+{% endblock %}

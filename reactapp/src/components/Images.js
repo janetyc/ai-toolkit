@@ -7,6 +7,7 @@ const List = styled.ul`
   display: flex;
   flex-wrap: wrap;
   padding: 0;
+  margin: 20px auto 0 auto;
   width: 100%;
   justify-content: flex-start;
   align-items: center;

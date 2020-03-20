@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Global, css } from '@emotion/core';
 import * as ml5 from 'ml5';
+import './App.css';
 
 import DropZone from './components/DropZone';
 import Images from './components/Images';
@@ -15,25 +16,38 @@ const globalStyle = css`
 const initClassifier = callback =>
   ml5.imageClassifier('MobileNet', () => callback && callback());
 
+const query = "table";
+
 function App() {
-  const [images, setImages] = useState([]);
+  //use state Hooks
   const [loaded, setLoaded] = useState(false);
+  const [images, setImages] = useState([]);
+
   const classifierRef = useRef();
 
   useEffect(() => {
     classifierRef.current = initClassifier(() => setLoaded(true));
-  }, []);
-
+  }, []); //pass empty array --> props, state preserve the initial value
+  
   return (
     <div>
       <Global styles={globalStyle} />
       {!loaded && <h1>Loading ml5 model...</h1>}
-      {loaded && <DropZone setImages={setImages} />}
-      {loaded && (
-        <Images data={images} classifier={classifierRef.current}></Images>
-      )}
+      <div className="main-area">
+        <div className="left-area">
+          {loaded && <DropZone setImages={setImages} />}
+        </div>
+        <div className="right-area">
+        {loaded && (
+          <Images data={images} classifier={classifierRef.current}></Images>
+        )}
+        </div>
+      </div>
+    
     </div>
   );
+  
+  
 }
 
 export default App;

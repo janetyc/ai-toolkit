@@ -20,3 +20,17 @@
 .App-link {
   color: #09d3ac;
 }
+.main-area {
+  overflow: hidden;
+  display: block;
+  width: 100%;
+}
+.left-area {
+  float: left;
+  width: 30%;
+  
+}
+.right-area {
+  float: left;
+  width: 70%;
+}

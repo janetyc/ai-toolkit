@@ -6,17 +6,20 @@
   "dependencies": {
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
+    "@mikecousins/react-pdf": "^5.3.1",
+    "axios": "^0.19.0",
     "cuid": "^2.1.6",
     "ml5": "^0.4.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-dropzone": "^10.1.10",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "tfjs-yolo-tiny": "^1.0.1"
   },
   "scripts": {
     "dev": "react-scripts start",
     "start": "serve -s build",
-    "build": "react-scripts build && mv build ../aitoolkit",
+    "build": "react-scripts build && mv build ../aitoolkit/static",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
