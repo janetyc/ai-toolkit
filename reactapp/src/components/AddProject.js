@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 import axios from "axios";
 
 async function addProjectToServer(data) {
-    let res = await axios.post('http://127.0.0.1:5000/api/add_project', data);
+    let res = await axios.post('/api/add_project', data);
     console.log(res);
 }
 
