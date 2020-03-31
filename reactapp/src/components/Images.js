@@ -14,7 +14,7 @@ const List = styled.ul`
   list-style: none;
 `;
 
-const Images = ({ data, classifier }) => {
+const Images = ({ data, detector }) => {
   return (
     <List>
       {data.map(image => (
@@ -22,7 +22,7 @@ const Images = ({ data, classifier }) => {
           <ImageWithPredictions
             id={image.id}
             src={image.src}
-            classifier={classifier}
+            detector={detector}
           ></ImageWithPredictions>
         </li>
       ))}

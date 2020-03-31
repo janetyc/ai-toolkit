@@ -6,6 +6,7 @@ import './App.css';
 import DropZone from './components/DropZone';
 import Images from './components/Images';
 
+
 const globalStyle = css`
   * {
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -13,8 +14,9 @@ const globalStyle = css`
   }
 `;
 
-const initClassifier = callback =>
-  ml5.imageClassifier('MobileNet', () => callback && callback());
+const initDetector = callback =>
+  ml5.YOLO('v3', () => callback && callback());
+
 
 const query = "table";
 
@@ -23,14 +25,14 @@ function App() {
   const [loaded, setLoaded] = useState(false);
   const [images, setImages] = useState([]);
 
-  const classifierRef = useRef();
+  const detectorRef = useRef();
 
   useEffect(() => {
-    classifierRef.current = initClassifier(() => setLoaded(true));
+    detectorRef.current = initDetector(() => setLoaded(true));
   }, []); //pass empty array --> props, state preserve the initial value
   
   return (
-    <div>
+    <div>      
       <Global styles={globalStyle} />
       {!loaded && <h1>Loading ml5 model...</h1>}
       <div className="main-area">
@@ -39,11 +41,10 @@ function App() {
         </div>
         <div className="right-area">
         {loaded && (
-          <Images data={images} classifier={classifierRef.current}></Images>
+          <Images data={images} detector={detectorRef.current}></Images>
         )}
         </div>
       </div>
-    
     </div>
   );
   

@@ -9,17 +9,23 @@
     "@mikecousins/react-pdf": "^5.3.1",
     "axios": "^0.19.0",
     "cuid": "^2.1.6",
+    "konva": "^4.2.0",
     "ml5": "^0.4.1",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "react-dropzone": "^10.1.10",
-    "react-scripts": "3.2.0",
-    "tfjs-yolo-tiny": "^1.0.1"
+    "react-hook-form": "^5.1.3",
+    "react-konva": "^16.12.0-0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.4.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
     "dev": "react-scripts start",
     "start": "serve -s build",
-    "build": "react-scripts build && mv build ../aitoolkit/static",
+    "build": "react-scripts build && rm -rf ../aitoolkit/static/build && mv build ../aitoolkit/static",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -37,5 +43,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-loader": "^8.0.6"
   }
 }

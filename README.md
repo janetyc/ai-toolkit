@@ -5,6 +5,13 @@
 ## Deploy to Herkoku
 
 
+## Setup ENV variables for virtualenv
+- [http://barkas.com/2016/set-environment-variables-activating-virtualenv/](http://barkas.com/2016/set-environment-variables-activating-virtualenv/)
+- setup PYTHONPATH to make "from aitoolkit import create_app" work
+- add the following code into "/Users/janetyc/.virtualenvs/ai-playground/bin/postactivate"
+
+> export PYTHONPATH=$PYTHONPATH:/Users/janetyc/Documents/Heroku/ai-toolkit
+
 ## DB Migration
 ### How to handle database migrations (by [Flask-Migrate](http://flask-migrate.readthedocs.io/en/latest/) )
 - please make sure "environment variables ENV=DEVELOPMENT", which means local database and local server
@@ -53,7 +60,16 @@
 > heroku run python manage.py db upgrade
 
 # AI-toolkit - react frontend
+## How to run react locally?
+> npm run dev //for development
+> 
+> npm fun build //build a static server to flask
+> 
+> npm run start //run local react using build folder
+
+
 ## use [react-p5js](https://github.com/atorov/react-p5js)
+
 
 
 ## Development Logs

@@ -2,8 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import ConceptNetAPI from './ConceptNetAPI';
 
-const classifyImg = (classifier, image) =>
-  classifier.predict(image, 5, (err, results) => {
+import Konva from 'konva';
+import { Stage, Layer, Image, Rect, Text, Circle } from 'react-konva';
+
+
+const detectImg = (detector, image) =>
+  detector.detect(image, (err, results) => {
     if (err) console.error('Unable to make a prediction.');
     return results;
   });
@@ -28,18 +32,24 @@ const mystyle = {
   padding: "1px"
 };
 
-const ImageWithPredictions = ({ classifier, id, src }) => {
+const ImageWithPredictions = ({ detector, id, src }) => {
   const imgRef = useRef();
   const [predictions, setPredictions] = useState([]);
   const [onQuery, setOnQuery] = useState(false);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
   useEffect(() => {
     const generatePredictions = async () => {
-      const predictions = await classifyImg(classifier, imgRef.current);
+      const predictions = await detectImg(detector, imgRef.current);
+      console.log(predictions);
+
+      setWidth(imgRef.current.width);
+      setHeight(imgRef.current.height);
       setPredictions(predictions);
     };
     generatePredictions();
-  }, [classifier]); // pass the second augment to useEffect
+  }, [detector]); // pass the second augment to useEffect
 
 
   function onClickEvent(e) {
@@ -55,15 +65,29 @@ const ImageWithPredictions = ({ classifier, id, src }) => {
 
   return (
     <div>
+      
+      <Stage width={width} height={height}>
+          <Layer>
+          <Image image={imgRef.current}/>
+          {predictions.map((pred, i) => {
+            const { label, confidence, x, y, w, h } = pred;
+            return (
+              // <Rect key={i} x={(x-w/2)*width} y={(y-h/2)*height} width={(w-x)*width} height={h*height} stroke={'red'} strokeWidth={1} />
+              <Rect key={i} x={x*width} y={y*height} width={w*width} height={h*height} stroke={'red'} strokeWidth={1} />
+            );
+          })}  
+          </Layer>
+        
+      </Stage>
       <Img key={id} alt={`img - ${id}`} src={src} ref={imgRef} />
       {predictions.map((pred, i) => {
-        const { label, confidence } = pred;
+        const { label, confidence, x, y, w, h } = pred;
         const roundedConfidence = Math.floor(confidence * 10000) / 100 + '%';
         return (
           <Prediction key={i}>
             <div>{label.split(',').map((item, indx) => 
               // <span style={mystyle} key={indx} value={item} onClick={onClickEvent}>
-                <ConceptNetAPI currentNode={item} confidence={roundedConfidence}/>
+                <ConceptNetAPI key={indx} currentNode={item} confidence={roundedConfidence}/>
               // </span>
             )}</div>
           </Prediction>

@@ -7,12 +7,14 @@ from aitoolkit.dbquery import DBQuery
 
 import sys
 
-#views = Blueprint('views', __name__, template_folder='templates/build', static_folder='templates/build/static')
-ml_views = Blueprint('ml_views', __name__,  url_prefix='/ml')
+# use react as front-end
+views = Blueprint('views', __name__)
 
-@ml_views.route('/', methods=['GET'])
-def index():
+
+@views.route('/', methods=['GET'])
+def index():	
     return render_template("index.html")
+
 
 #error page
 # @ml_views.app_errorhandler(404)

@@ -6,3 +6,4 @@ psycopg2==2.7.5
 SQLAlchemy==1.2.10
 python-dotenv==0.9.1
 Flask-Cors==3.0.8
+Pyrebase==3.0.27

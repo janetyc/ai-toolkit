@@ -3,6 +3,15 @@ import os
 PROJECT_NAME = "aitoolkit"
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
+
+FIREBASE_CONFIG = {
+  "apiKey": os.environ.get('FIREBASE_APIKEY') or "",
+  "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN') or "",
+  "databaseURL": os.environ.get('FIREBASE_DATABASE_URL') or "",
+  "storageBucket": os.environ.get('FIREBASE_STORAGEBUCKET') or "",
+  "serviceAccount": os.environ.get('FIREBASE_SERVICE_ACCOUNT') or ""
+}
+
 class Config(object):
     DEBUG = False
     TESTING = False
