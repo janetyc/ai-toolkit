@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from 'react';
-
-import { Container, Grid, Form, Segment, Button, Card } from "semantic-ui-react";
-
+import { Container, Card } from "semantic-ui-react";
 import axios from "axios";
 
-// var config = {
-//     headers: {'Access-Control-Allow-Origin': '*'}
-// };
-
 async function fetchData(){
-    // const result = await axios.get('http://127.0.0.1:5000/api/get_all_projects', config);
     // const result = await axios.get('http://127.0.0.1:5000/api/get_all_projects');
     const result = await axios.get('/api/get_all_projects');
     console.log(result.data.all_projects);
-    return result.data.all_projects
-        
+    return result.data.all_projects 
 }
 
 function ProjectsIndex() {
