@@ -56,28 +56,28 @@ const ImageWithPredictions = ({ detector, id, src }) => {
     e.preventDefault();
     setOnQuery(true);
     console.log(e.currentTarget.getAttribute('value'));
-    if(e.currentTarget.childNodes.length>2){
+    if (e.currentTarget.childNodes.length > 2) {
       e.currentTarget.childNodes[1].set("visible")
       console.log(e.currentTarget.childNodes[1]);
     }
-    
+
   }
 
   return (
     <div>
-      
+
       <Stage width={width} height={height}>
-          <Layer>
-          <Image image={imgRef.current}/>
+        <Layer>
+          <Image image={imgRef.current} />
           {predictions.map((pred, i) => {
             const { label, confidence, x, y, w, h } = pred;
             return (
               // <Rect key={i} x={(x-w/2)*width} y={(y-h/2)*height} width={(w-x)*width} height={h*height} stroke={'red'} strokeWidth={1} />
-              <Rect key={i} x={x*width} y={y*height} width={w*width} height={h*height} stroke={'red'} strokeWidth={1} />
+              <Rect key={i} x={x * width} y={y * height} width={w * width} height={h * height} stroke={'red'} strokeWidth={1} />
             );
-          })}  
-          </Layer>
-        
+          })}
+        </Layer>
+
       </Stage>
       <Img key={id} alt={`img - ${id}`} src={src} ref={imgRef} />
       {predictions.map((pred, i) => {
@@ -85,9 +85,9 @@ const ImageWithPredictions = ({ detector, id, src }) => {
         const roundedConfidence = Math.floor(confidence * 10000) / 100 + '%';
         return (
           <Prediction key={i}>
-            <div>{label.split(',').map((item, indx) => 
+            <div>{label.split(',').map((item, indx) =>
               // <span style={mystyle} key={indx} value={item} onClick={onClickEvent}>
-                <ConceptNetAPI key={indx} currentNode={item} confidence={roundedConfidence}/>
+              <ConceptNetAPI key={indx} currentNode={item} confidence={roundedConfidence} />
               // </span>
             )}</div>
           </Prediction>

@@ -25,6 +25,6 @@ def get_image_url(server_path):
 
 
 if __name__ == "__main__":
-	#upload_image("images/cat.jpg", "ai-toolkit/scripts/images/cat.jpg")
+	upload_image("images/cat.jpg", "ai-toolkit/scripts/images/cat.jpg")
 	url = get_image_url("images/cat.jpg")
 	print(url)

@@ -9,7 +9,7 @@ FIREBASE_CONFIG = {
   "authDomain": os.environ.get('FIREBASE_AUTH_DOMAIN') or "",
   "databaseURL": os.environ.get('FIREBASE_DATABASE_URL') or "",
   "storageBucket": os.environ.get('FIREBASE_STORAGEBUCKET') or "",
-  "serviceAccount": os.environ.get('FIREBASE_SERVICE_ACCOUNT') or ""
+#   "serviceAccount": os.environ.get('FIREBASE_SERVICE_ACCOUNT') or ""
 }
 
 class Config(object):
