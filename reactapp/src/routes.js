@@ -12,8 +12,6 @@ import './index.css';
 import ProjectsIndex from './components/ProjectsIndex';
 import Project from './components/Project';
 import AddProject from './components/AddProject';
-import Home from './components/Home';
-import Dashboard from './components/Dashboard';
 
 const customHistory = createBrowserHistory();
 
@@ -21,15 +19,12 @@ export default (
     <Router history={customHistory}>
         <Menu>
           <Menu.Item><Link to="/">Home</Link></Menu.Item>
-          <Menu.Item><Link to="/projects">Projects</Link></Menu.Item>
-          <Menu.Item><Link to="/dashboard">Dashboard</Link></Menu.Item>
           <Menu.Item position='right'><Button color="teal" as={Link} to="/addProject">Add Project</Button></Menu.Item>
         </Menu>
         <Switch>
-            <Route exact path="/"><Home /></Route>
+            <Route exact path="/" component={ProjectsIndex} />
             <Route path="/projects" component={ProjectsIndex} />
             <Route path="/project/:pid" component={Project} />
-            <Route path="/dashboard" component={Dashboard} />
             <Route path="/addProject" component={AddProject} />
         </Switch>
     </Router>
