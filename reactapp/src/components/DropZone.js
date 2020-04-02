@@ -1,20 +1,7 @@
-import React, { Container, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import cuid from 'cuid'; //utility for construting unique IDs
-
-// import styled from '@emotion/styled';
-
-// const Container = styled.div`
-//   display: flex;
-//   width: 80%;
-//   height: 400px;
-//   margin: 20px auto 0 auto;
-//   background: lightgray;
-//   border: 4px dotted darkgray;
-//   justify-content: center;
-//   align-items: center;
-//   cursor: pointer;
-// `;
+import { Icon } from "semantic-ui-react";
 
 //https://github.com/react-dropzone/react-dropzone
 const DropZone = ({ setImages }) => {
@@ -38,6 +25,7 @@ const DropZone = ({ setImages }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop }); //customized Hooks
   return (
     <div className="ui center aligned tertiary blue inverted segment" {...getRootProps()}>
+      <Icon name="cloud upload" size="big" />
       <input {...getInputProps()} />
       {isDragActive ? (
         <p>Drop the files here ...</p>

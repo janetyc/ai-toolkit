@@ -1,7 +1,6 @@
 import json
 
 from aitoolkit.models import Project
-from aitoolkit.models import Dataset
 from aitoolkit.models import Image, ImageAnnotation
 
 from aitoolkit.enum import DataType
@@ -19,15 +18,8 @@ class DBQuery(object):
 
         return project.id
 
-    def add_dataset(self, project_id, db_type):
-        dataset = Dataset(project_id, db_type)
-        db.session.add(dataset)
-        db.session.commit()
-
-        return imagedata.id
-    
-    def add_image(self, dataset_id, image_url, title):
-        image = Image(dataset_id, image_url, title)
+    def add_image(self, project_id, image_url, image_key):
+        image = Image(project_id, image_url, image_key)
         db.session.add(image)
         db.session.commit()
 
@@ -51,30 +43,44 @@ class DBQuery(object):
         project = Project.query.filter_by(id=project_id).first()
         return project
 
-    def get_images_by_dataset_id(self, dataset_id):
-        dataset = Dataset.query.filter_by(id=dataset_id).first()
-        if dataset.db_type == DataType.IMAGEDATA.value:
-            all_images = Image.query.filter_by(dataset_id=dataset.id).all()
-            return all_images
-        else:
-            return None      
+    def get_image_by_id(self, image_id):
+        image = Image.query.filter_by(id=image_id).first()
+        return image
 
-    def get_all_images_by_project_id(self, project_id):
-        project = self.get_project_by_id(project_id)
-        datasets = json.loads(project.datasets)
+    def get_image_by_key(self, image_key):
+        image = Image.query.filter_by(image_key=image_key).first()
+        return image
 
-        dataset_ids = json.loads(imagedata.dataset_ids)
-        all_images = []
-        for dataset_id in dataset_ids:
-            dataset = Dataset.query.filter_by(id=dataset_id).first()
-            if dataset.db_type == DataType.IMAGEDATA.value:
-                all_images.append(self.get_images_by_dataset_id(dataset_id))
-            
-        return all_images
+    def get_images_by_project_id(self, project_id):
+        project = Project.query.filter_by(id=project_id).first()
+        all_images = Image.query.filter_by(project_id=project.id).all()
+        image_list = []
+        for image in all_images:
+            image_list.append({
+                "id": image.id,
+                "key": image.image_key,
+                "image_url": image.image_url
+            })
+
+        return image_list
         
+    def get_image_list_by_project_id(self, project_id):
+        project = Project.query.filter_by(id=project_id).first()
+        return project.image_list
+
+    def get_image_data_by_image_ids(self, image_ids):
+        image_data = []
+        for img_id in image_ids:
+            image = self.get_image_by_id(img_id)
+            image_data.append(image)
+
+        return image_data
+    
     # ************************************************** #
     #               Update data from database            #
     # ************************************************** #
-    def updateData():
-        return
+    def update_image_list_by_project_id(self, project_id, image_list):
+        project = Project.query.filter_by(id=project_id).update({"image_list": image_list})
+
+        return project
     

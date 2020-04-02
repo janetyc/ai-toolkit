@@ -1,81 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
-import { useForm } from 'react-hook-form';
-import { Container, Grid, Form, Segment, Button, Card } from "semantic-ui-react";
-
+import { Container, Header, Button } from "semantic-ui-react";
 import axios from "axios";
 
-// var config = {
-//     headers: {'Access-Control-Allow-Origin': '*'}
-// };
+import Uploader from './Uploader'
+import ImageDataset from './ImageDataset';
 
-async function addProject(data) {
-  let res = await axios.post('/api/add_project', data);
-  console.log(res);
-}
-async function fetchData(){
-  // const result = await axios.get('/api/get_all_projects', config);
-  const result = await axios.get('/api/get_all_projects';
-  console.log(result.data.all_projects);
-  return result.data.all_projects
-    
+
+async function fetchData(pid) {
+  const result = await axios.post(process.env.REACT_APP_API_URL + '/api/get_project_by_id', {
+    "project_id": pid
+  });
+  return result.data
 }
 
-function Project() {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data,e) =>{
-    console.log(data);
-    addProject(data).then(()=> {
-      fetchData().then(setData);
-      e.target.reset();
+function Project({ match }) {
+
+  const [data, setData] = useState({})
+  const [imagedata, setImageData] = useState([])
+
+  const projectId = match.params.pid;
+
+
+  const handleStatusChange = (status) => {
+    fetchData(projectId).then(res => {
+      setData(res["data"])
+      setImageData(res["image_data"])
     });
+    console.log("upload fetch");
   };
 
-  const [data, setData] = useState([])
-  // useEffect(()=> {
-  //     const fetchData = async () => {
-  //         const result = await axios.get('http://127.0.0.1:5000/api/get_all_projects', config);
-  //         console.log(result.data.all_projects);
-  //         setData(result.data.all_projects);
-  //     };    
-  //     fetchData();
-  // }, []);
-
-  useEffect(()=> {   
-    fetchData().then(setData);
+  useEffect(() => {
+    fetchData(projectId).then(res => {
+      setData(res["data"])
+      setImageData(res["image_data"])
+    });
+    console.log("fetch");
   }, []);
-  
+
   return (
-    // height: '100vh' --> height of this element is equal to 100% of the viewport height. 
-    <Container> 
-      <Card.Group style={{ marginTop: '5em', height: '50vh' }} itemsPerRow={4}>
-        {data.map((item, indx) => 
-          <Card key={indx}>
-            <Card.Content>
-              <Card.Header>Project: {item.title}</Card.Header>
-              <Card.Description>{item.description}</Card.Description>
-            </Card.Content>
-          </Card>
-        )}
-      </Card.Group>
-      <Grid textAlign='center' style={{ height: '50vh' }} verticalAlign='middle'>
-        <Grid.Column style={{ maxWidth: 450 }}>
-          <Form size='large' onSubmit={ handleSubmit(onSubmit) }>
-            <Segment stacked>
-              <Form.Field>
-                <input type="hidden" name="created_user" value="web_user" ref={register} />
-                <input placeholder='Project title' name="title" ref={register} />
-              </Form.Field>
-              <Form.Field>
-                <input placeholder='Description' name="description" ref={register} />
-              </Form.Field>
-              
-              <Button color='teal' fluid size='large'>Add Project</Button>
-            </Segment>
-          </Form>
-        </Grid.Column>
-      </Grid> 
-        
+    <Container>
+      <div style={{ marginTop: '2em' }}>
+        <Header as='h2'>Project: {data.title} <Button color="teal" >Start to Annotate</Button></Header>
+        <p>{data.description}</p>
+      </div>
+      
+      <div style={{ marginTop: '2em' }}>
+        <Uploader statusCallback={handleStatusChange} projectId={projectId} />
+      </div>
+      <div style={{ marginTop: '3em' }}>
+        <ImageDataset imageList={imagedata} /> 
+      </div>
+      
+
     </Container>
   );
 }

@@ -11,7 +11,7 @@ class Project(db.Model):
 
     title = db.Column(db.Text())
     description = db.Column(db.Text())
-    datasets = db.Column(JSON)
+    image_list = db.Column(JSON)
 
     def __init__(self, created_user, title, description):
         self.created_user = created_user
@@ -23,33 +23,15 @@ class Project(db.Model):
     def __repr__(self):
         return '<Project %r>' % self.id
 
-class Dataset(db.Model):
-    __tablename__ = 'dataset'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    project_id = db.Column(db.Integer)
-    db_type = db.Column(db.Text())
-
-    dataset_ids = db.Column(JSON)
-    created_time = db.Column(db.DateTime())
-
-    def __init__(self, project_id, db_type):
-        self.project_id = project_id
-        self.db_type = db_type
-        self.created_time = datetime.utcnow()
-
-
-    def __repr__(self):
-        return '<Dataset %r>' % self.id
-
 
 class Image(db.Model):
     __tablename__ = 'image'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    dataset_id = db.Column(db.Integer)
+    project_id = db.Column(db.Integer)
     image_url = db.Column(db.Text())
-    
+    image_key = db.Column(db.Text())
+
     # metadata
     title = db.Column(db.Text())
     description = db.Column(db.Text())
@@ -57,10 +39,10 @@ class Image(db.Model):
 
     creatd_time = db.Column(db.DateTime())
 
-    def __init__(self, dataset_id, image_url, title):
-        self.dataset_id = dataset_id
+    def __init__(self, project_id, image_url, image_key):
+        self.project_id = project_id
         self.image_url = image_url
-        self.title = title
+        self.image_key = image_key
         self.creatd_time = datetime.utcnow()
 
     def __repr__(self):

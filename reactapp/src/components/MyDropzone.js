@@ -1,7 +1,6 @@
 import React, { useCallback, useState, Fragment } from 'react';
 import { Icon } from "semantic-ui-react";
 import { useDropzone } from 'react-dropzone';
-import cuid from 'cuid';
 
 const previewStyle = {
   display: 'inline',

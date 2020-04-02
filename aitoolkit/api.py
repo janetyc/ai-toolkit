@@ -36,24 +36,41 @@ def add_project():
 def add_images():
     if request.method == 'POST':
         json_data = request.get_json()
+        project_id = json_data["project_id"]
+        image_data = json_data["data"]
+        
         image_list = []
-        for item in json_data:
-            img_id = item
-            header, encoded = json_data[item].split(",", 1)
+        for img_key in image_data:
+            header, encoded = image_data[img_key].split(",", 1)
             idata = b64decode(encoded)
         
-            with open("temp/%s.jpg" % img_id, "wb") as f:
+            with open("temp/%s.jpg" % img_key, "wb") as f:
                 f.write(idata)
         
-            storage.child('/images/%s.jpg' % img_id).put("temp/%s.jpg" % img_id)    
-            url = storage.child('/images/%s.jpg' % img_id).get_url(None)
+            storage.child('/images/%s.jpg' % img_key).put("temp/%s.jpg" % img_key)
+            url = storage.child('/images/%s.jpg' % img_key).get_url(None)
+            
+            os.remove("temp/%s.jpg" % img_key)
+
+            # save to image database
+            img_id = DBQuery().add_image(int(project_id), url, img_key)
+
             image_list.append(
                 {
+                    "key": img_key,
                     "id": img_id,
                     "url": url
                 }
             )
-            os.remove("temp/%s.jpg" % img_id)
+
+        old_list = DBQuery().get_image_list_by_project_id(int(project_id))
+        if old_list:
+            old_list.extend(image_list)
+        else:
+            old_list = []
+        
+        DBQuery().update_image_list_by_project_id(project_id, old_list)
+
         data = {
             "images": image_list
         }
@@ -69,12 +86,43 @@ def get_all_projects():
     projects = []
     for project in all_projects:
         projects.append({
+            "id": project.id,
             "title": project.title,
             "description": project.description
         })
+
 
     data = {
         "all_projects": projects
     }
     return jsonify(data)
+
+@api.route('/api/get_project_by_id', methods=('GET', 'POST'))
+def get_project_by_id():
+    if request.method == 'POST':
+        data = request.get_json()
+        project_id = data["project_id"]
+
+        image_data = []
+        if is_number(project_id):
+            project = DBQuery().get_project_by_id(int(project_id))
+            image_data = DBQuery().get_images_by_project_id(int(project_id))
+
+            data = {
+                "id": project.id,
+                "title": project.title,
+                "description": project.description,
+            }
+    
+        else:
+            data = {}
+
+        return jsonify(success=1, data=data, image_data=image_data)
+    else:
+        return jsonify(success=0, data=[], image_data=[])
+
+
+def is_number(s):
+    """ Returns True is string is a number. """
+    return s.replace('.','',1).isdigit()
     

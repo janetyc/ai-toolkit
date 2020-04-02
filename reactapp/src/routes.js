@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-    Router,
+    HashRouter as Router,
     Switch,
     Link,
     Route
@@ -10,6 +10,7 @@ import { createBrowserHistory } from "history";
 
 import './index.css';
 import ProjectsIndex from './components/ProjectsIndex';
+import Project from './components/Project';
 import AddProject from './components/AddProject';
 import Home from './components/Home';
 import Dashboard from './components/Dashboard';
@@ -27,7 +28,7 @@ export default (
         <Switch>
             <Route exact path="/"><Home /></Route>
             <Route path="/projects" component={ProjectsIndex} />
-            <Route path="/projects/:id" />
+            <Route path="/project/:pid" component={Project} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/addProject" component={AddProject} />
         </Switch>

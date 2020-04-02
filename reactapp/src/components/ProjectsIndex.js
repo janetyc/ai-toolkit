@@ -3,9 +3,8 @@ import { Container, Card } from "semantic-ui-react";
 import axios from "axios";
 
 async function fetchData(){
-  // const result = await axios.get('http://127.0.0.1:5000/api/get_all_projects');
-  const result = await axios.get('/api/get_all_projects');
-  console.log(result.data.all_projects);
+  const result = await axios.get(process.env.REACT_APP_API_URL+'/api/get_all_projects');
+  // const result = await axios.get('/api/get_all_projects');
   return result.data.all_projects 
 }
 
@@ -18,9 +17,9 @@ function ProjectsIndex() {
   
   return (
     <Container> 
-      <Card.Group style={{ marginTop: '5em' }} itemsPerRow={4}>
-        {data.map((item, indx) => 
-          <Card key={indx}>
+      <Card.Group style={{ marginTop: '2em' }} itemsPerRow={4}>
+        {data.map((item, indx) =>
+          <Card key={indx} href={"/#/project/"+ item.id} >
             <Card.Content>
               <Card.Header>Project: {item.title}</Card.Header>
               <Card.Description>{item.description}</Card.Description>
