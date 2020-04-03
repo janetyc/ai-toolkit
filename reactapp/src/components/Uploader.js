@@ -11,6 +11,7 @@ const previewStyle = {
   padding: '3px'
 };
 
+
 async function addImagesToServer(imagedata) {
   let res = await axios.post(process.env.REACT_APP_API_URL+'/api/add_images', imagedata);
   // let res = await axios.post('/api/add_images', imagedata);

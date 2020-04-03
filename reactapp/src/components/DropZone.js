@@ -24,7 +24,7 @@ const DropZone = ({ setImages }) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop }); //customized Hooks
   return (
-    <div className="ui center aligned tertiary blue inverted segment" {...getRootProps()}>
+    <div className="ui center aligned secondary segment" {...getRootProps()}>
       <Icon name="cloud upload" size="big" />
       <input {...getInputProps()} />
       {isDragActive ? (
