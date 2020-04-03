@@ -3,8 +3,6 @@ import { Container, Grid, Image } from "semantic-ui-react";
 
 const ImageDataset = ({ imageList }) => {
 
-
-
   return (
     <Container>
       <Grid>

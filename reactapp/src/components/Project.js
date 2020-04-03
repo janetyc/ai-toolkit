@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-
+import {Link} from 'react-router-dom';
 import { Container, Header, Button } from "semantic-ui-react";
 import axios from "axios";
 
@@ -41,7 +41,7 @@ function Project({ match }) {
   return (
     <Container>
       <div style={{ marginTop: '2em' }}>
-        <Header as='h2'>Project: {data.title} <Button color="teal" >Start to Annotate</Button></Header>
+        <Header as='h2'>Project: {data.title} <Button color="teal" as={Link} to={"/annotate/" + projectId}>Start to Annotate</Button></Header>
         <p>{data.description}</p>
       </div>
       

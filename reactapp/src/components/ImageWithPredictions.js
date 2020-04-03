@@ -65,7 +65,6 @@ const ImageWithPredictions = ({ detector, id, src }) => {
 
   return (
     <div>
-
       <Stage width={width} height={height}>
         <Layer>
           <Image image={imgRef.current} />

@@ -12,6 +12,7 @@ import './index.css';
 import ProjectsIndex from './components/ProjectsIndex';
 import Project from './components/Project';
 import AddProject from './components/AddProject';
+import AnnotatePage from './components/AnnotatePage';
 
 const customHistory = createBrowserHistory();
 
@@ -25,6 +26,7 @@ export default (
             <Route exact path="/" component={ProjectsIndex} />
             <Route path="/projects" component={ProjectsIndex} />
             <Route path="/project/:pid" component={Project} />
+            <Route path="/annotate/:pid" component={AnnotatePage} />
             <Route path="/addProject" component={AddProject} />
         </Switch>
     </Router>
