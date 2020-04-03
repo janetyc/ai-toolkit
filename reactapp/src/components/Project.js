@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import { Container, Header, Button } from "semantic-ui-react";
+import { Container, Header, Button} from "semantic-ui-react";
 import axios from "axios";
 
 import Uploader from './Uploader'
@@ -16,8 +16,8 @@ async function fetchData(pid) {
 
 function Project({ match }) {
 
-  const [data, setData] = useState({})
-  const [imagedata, setImageData] = useState([])
+  const [data, setData] = useState({});
+  const [imagedata, setImageData] = useState([]);
 
   const projectId = match.params.pid;
 

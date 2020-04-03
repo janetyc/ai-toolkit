@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import DropZone from './DropZone';
-import { Button } from "semantic-ui-react";
+import { Button, Dimmer, Loader } from "semantic-ui-react";
 import axios from "axios";
 
 const previewStyle = {
@@ -19,8 +19,11 @@ async function addImagesToServer(imagedata) {
 
 function Uploader( {statusCallback, projectId} ) {
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   function uploadImages(){
+    setLoading(true);
+
     var data = {}
     images.map(item => {
       data[item.id] = item.src
@@ -30,7 +33,8 @@ function Uploader( {statusCallback, projectId} ) {
       "data":  data
     }
     addImagesToServer(imagedata).then(response => {
-      if(response["success"]){ 
+      if(response["success"]){
+        setLoading(false);
         setImages([]);
         statusCallback(true);
       }
@@ -39,6 +43,11 @@ function Uploader( {statusCallback, projectId} ) {
 
   return (
     <div>
+      {loading && (
+        <Dimmer active inverted>
+          <Loader size='medium'>Uploading</Loader>
+        </Dimmer>
+      ) }
       <DropZone setImages={setImages} />
       <div>
       {images.map(image => (
