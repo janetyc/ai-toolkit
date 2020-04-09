@@ -8,6 +8,8 @@ from aitoolkit import firebase
 from datetime import datetime
 from base64 import b64decode
 
+from aitoolkit.ml_api import get_predictions_from_url
+from aitoolkit import ml_models
 
 api = Blueprint('api', __name__)
 storage = firebase.storage()
@@ -21,6 +23,7 @@ def add_project():
         description = data["description"]
         
         project_id = DBQuery().add_project(created_user, title, description)
+
 
         data = {
             "project_id": project_id,
@@ -121,6 +124,23 @@ def get_project_by_id():
     else:
         return jsonify(success=0, data=[], image_data=[])
 
+
+@api.route('/api/get_predictions_by_image_url', methods=('GET', 'POST'))
+def get_predictions_by_image_url():
+    if request.method == 'POST':
+        data = request.get_json()
+        image_url = data["image_url"]
+        model_name = "fasterRCNN_I"
+        predictions = get_predictions_from_url(ml_models[model_name], image_url)
+
+        data = {
+            "image_url": image_url,
+            "predictions": predictions
+        }
+
+        return jsonify(success=1, data=data)
+    else:
+        return jsonify(success=0, data=[])
 
 def is_number(s):
     """ Returns True is string is a number. """

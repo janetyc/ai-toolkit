@@ -13,6 +13,8 @@ db = SQLAlchemy()
 #setup firebase
 firebase = pyrebase.initialize_app(config.FIREBASE_CONFIG)
 
+ml_models = {}
+
 # why we use application factories
 # http://flask.pocoo.org/docs/1.0/patterns/appfactories/#app-factories
 def create_app():
@@ -26,6 +28,9 @@ def create_app():
     
     # app = Flask(__name__)
     CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+    
+    # for disalbe warning about AVX2
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
     
     env = os.getenv('ENV')
 
@@ -43,14 +48,18 @@ def create_app():
     #import and register blueprints
     #should put after app
     #(why blueprints? http://flask.pocoo.org/docs/1.0/blueprints/)
-    # from aitoolkit.views import views
-    # from aitoolkit.test_views import test_views
-    # app.register_blueprint(views)
-    # app.register_blueprint(test_views)
     from aitoolkit.views import views
     from aitoolkit.api import api
     app.register_blueprint(views)
     app.register_blueprint(api)
+
+
+    #load ml model_st
+    from aitoolkit.ml_api import load_model
+    # ml_models["mobilenet"] = load_model(config.IMAGE_CLASSIFITER_MODELS["SSD_MobileNet_V2"])
+    ml_models["fasterRCNN_I"] = load_model(config.IMAGE_CLASSIFITER_MODELS["FasterRCNN_Inceptionv2"])
+    #ml_models["fasterRCNN_R"] = load_model(config.IMAGE_CLASSIFITER_MODELS["FasterRCNN_ResNet"])
+    #ml_models["maskRCNN"] = load_model(config.IMAGE_CLASSIFITER_MODELS["Mask_RCNN"])
 
     db.app = app
     db.init_app(app)

@@ -12,6 +12,14 @@ FIREBASE_CONFIG = {
 #   "serviceAccount": os.environ.get('FIREBASE_SERVICE_ACCOUNT') or ""
 }
 
+IMAGE_CLASSIFITER_MODELS = {
+    "SSD_MobileNet_V2": "ssd_mobilenet_v2_coco_2018_03_29",
+    "FasterRCNN_Inceptionv2": "faster_rcnn_inception_v2_coco_2018_01_28",
+    "FasterRCNN_ResNet" :"faster_rcnn_resnet50_coco_2018_01_28",
+    "Mask_RCNN": "mask_rcnn_inception_v2_coco_2018_01_28"
+}
+PATH_TO_LABELS = 'mscoco_label_map.pbtxt'
+
 class Config(object):
     DEBUG = False
     TESTING = False
