@@ -131,11 +131,12 @@ def get_predictions_by_image_url():
         data = request.get_json()
         image_url = data["image_url"]
         model_name = "fasterRCNN_I"
-        predictions = get_predictions_from_url(ml_models[model_name], image_url)
+        result = get_predictions_from_url(ml_models[model_name], image_url)
 
         data = {
+            "image_size": result["image_size"],
             "image_url": image_url,
-            "predictions": predictions
+            "predictions": result["predictions"]
         }
 
         return jsonify(success=1, data=data)

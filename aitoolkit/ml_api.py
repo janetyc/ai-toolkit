@@ -102,5 +102,8 @@ def get_predictions_from_url(model, image_url):
                 "score": scores[i]
             }
         )
-    
-    return output_list
+    result = {
+      "image_size": [image.width, image.height],
+      "predictions": output_list
+    }
+    return result

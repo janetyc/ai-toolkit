@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Container } from "semantic-ui-react";
+import React, { useState, useEffect, useRef, createRef } from 'react';
+import { Container, Button } from "semantic-ui-react";
 
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
+
+import { Stage, Layer, Image, Rect, Text, Group } from 'react-konva';
+import useImage from 'use-image';
 
 import axios from "axios";
 
@@ -13,7 +16,6 @@ async function getPredictionFromServer(image_url) {
   return res.data
 }
 
-
 async function fetchData(pid) {
   const result = await axios.post(process.env.REACT_APP_API_URL + '/api/get_project_by_id', {
     "project_id": pid
@@ -21,6 +23,10 @@ async function fetchData(pid) {
   return result.data
 }
 
+const URLImage = ({ url, myRef }) => {
+  const [img] = useImage(url);
+  return <Image image={img} ref={myRef}/>;
+};
 
 function AnnotatePage({ match }) {
 
@@ -28,28 +34,50 @@ function AnnotatePage({ match }) {
   const [imagedata, setImageData] = useState([]);
   const [predictions, setPredictions] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [predloading, setPredLoading] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [imgSize, setImgSize] = useState({ w:0, h:0 });
 
-  const projectId = match.params.pid;
+  const refs = useRef([]);
 
-  function makePrediction(image){
-    getPredictionFromServer(image.src).then(res => {
+  const projectId = match.params.pid;  
+
+  function makePrediction(image_url){
+    console.log("predict: "+ image_url);
+    setPredLoading(true);
+    getPredictionFromServer(image_url).then(res => {
       if(res["success"]){
         setPredictions(res["data"].predictions);
+        setPredLoading(false);
+        let imgS = res["data"].image_size;
+        setImgSize({
+          w: imgS[0],
+          h: imgS[1]
+        });
+ 
       }
     });
   }
+
   function predict(e){
     e.preventDefault();
-    console.log(e.currentTarget.width);
-    console.log(e.currentTarget.height);
-    makePrediction(e.currentTarget);
+    makePrediction(imagedata[currentIndex].image_url);
+  }
+  function changeImg(e){
+    
+    setCurrentIndex(e.item);
+    console.log(e.item);
+    console.log(refs.current[e.item].current.attrs.image.width);
+    console.log(refs.current[e.item].current.attrs.image.height);
+
+    setPredictions([])
   }
 
   useEffect(() => {
     fetchData(projectId).then(res => {
       setData(res["data"]);
-      
-      res["image_data"].map((item) => {
+      refs.current = [];
+      res["image_data"].map((item, i) => {
         setImageData(imagedata=>[
           ...imagedata,
           {
@@ -57,28 +85,44 @@ function AnnotatePage({ match }) {
             key: item.key,
             image_url: item.image_url
           }
-        ]); 
+        ]);
+        refs.current[i] = createRef();
       });
+      
       setLoaded(true);
+      
     });
     
   }, []);
-
+  
   return (
     <Container>
-      {predictions.map((box, idx) => 
-        <div key={idx}>{box.label} ({box.score})</div> 
-      )}
       {loaded && (
-        <AliceCarousel>
-          {imagedata.map(item => 
-            <div key={item.key}>
-              <img key={item.key} src={item.image_url} onClick={predict} crossOrigin="anonymous"/>
-              
-            </div>
+        <AliceCarousel onSlideChanged={ changeImg }>
+          {imagedata.map( (item, i) => 
+            <Stage key={item.key} width={window.innerWidth*0.75} height={window.innerHeight*0.75} >
+              <Layer>                
+                <URLImage url={item.image_url} myRef={refs.current[i]} width={1024} height={600}/>
+              </Layer> 
+            </Stage>
           )}
         </AliceCarousel>
       )}
+      <Button onClick={predict}>predict</Button>
+      <Stage width={imgSize.w} height={imgSize.h}>
+      <Layer>
+        {predictions.length > 0 &&(
+          <Image image={refs.current[currentIndex].current.attrs.image} />
+        )}
+        {!predloading && predictions.map((box, idx) => 
+          <Group key={idx}>
+            <Rect  x={box.box[1]*imgSize.w} y={box.box[0]*imgSize.h} width={(box.box[3]-box.box[1])*imgSize.w} height={ (box.box[2]-box.box[0])*imgSize.h} stroke={'#33d6ff'} strokeWidth={2} />
+            <Text x={box.box[1]*imgSize.w} y={box.box[0]*imgSize.h} fill={'#ccf5ff'} fontSize={20} text={box.label} />
+          </Group>  
+        )}  
+      </Layer>    
+      </Stage>
+      
     </Container>
   )
 }
