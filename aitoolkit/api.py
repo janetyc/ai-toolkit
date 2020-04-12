@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import Blueprint, Flask, request, render_template, redirect, url_for, jsonify
+from flask import Blueprint, Flask, request, render_template, redirect, url_for, jsonify, g
 from aitoolkit.dbquery import DBQuery
 from aitoolkit import firebase
 
@@ -10,9 +10,12 @@ from base64 import b64decode
 
 from aitoolkit.ml_api import get_predictions_from_url
 from aitoolkit import ml_models
+from flask import current_app
+
 
 api = Blueprint('api', __name__)
 storage = firebase.storage()
+firebase_db = firebase.database()
 
 @api.route('/api/add_project', methods=('GET', 'POST'))
 def add_project():
@@ -117,6 +120,7 @@ def get_project_by_id():
                 "description": project.description,
             }
     
+
         else:
             data = {}
 
@@ -124,24 +128,70 @@ def get_project_by_id():
     else:
         return jsonify(success=0, data=[], image_data=[])
 
+@api.route('/api/add_prediction_task', methods=('GET', 'POST'))
+def add_prediction_task():
+    if request.method == 'POST':
+        data = request.get_json()
+        image_url = data["image_url"]
+        model_name = "fasterRCNN_I"
+        
+        # add task into queue
+        #job = current_app.task_queue.enqueue(run_prediction_task, model_name, image_url)
+        #print("push job into queue")
+
+        return jsonify(success=1, data=[])
+    else:
+        return jsonify(success=0, data=[])
 
 @api.route('/api/get_predictions_by_image_url', methods=('GET', 'POST'))
 def get_predictions_by_image_url():
     if request.method == 'POST':
         data = request.get_json()
+        
         image_url = data["image_url"]
+        image_key = data["image_key"]
         model_name = "fasterRCNN_I"
-        result = get_predictions_from_url(ml_models[model_name], image_url)
+        results = DBQuery().get_img_predictions_by_key(model_name, image_key)
 
-        data = {
-            "image_size": result["image_size"],
-            "image_url": image_url,
-            "predictions": result["predictions"]
-        }
+        if results != None:
+            image_size = results["image_size"]
+            predictions = results["predictions"]
+            data = {
+                "image_key": image_key,
+                "image_size": image_size,
+                "image_url": image_url,
+                "predictions": predictions
+            }
+            
+        else: #if no, add prediction into queue
+            #get data from firebase
+            fire_data = firebase_db.child("predictions").child(image_key).get().val()
+            if fire_data:
+                data = {
+                    "image_size": fire_data["image_size"],
+                    "image_url": image_url,
+                    "predictions": fire_data["predictions"]
+                }
+                DBQuery().add_machine_predictions(model_name, image_key, image_url, fire_data)
+            else:
+                print("add into task queue")
+                current_app.task_queue.enqueue(run_prediction_task, firebase_db, model_name, image_url, image_key)
+                data = {
+                    "image_size": [0, 0],
+                    "image_url": image_url,
+                    "predictions": []
+                }
 
         return jsonify(success=1, data=data)
     else:
         return jsonify(success=0, data=[])
+
+
+def run_prediction_task(f_db, model_name, image_url, img_key):
+    result = get_predictions_from_url(ml_models[model_name], image_url)
+    f_db.child("predictions").child(img_key).set(result)
+
+    print("add task success!")
 
 def is_number(s):
     """ Returns True is string is a number. """

@@ -36,7 +36,7 @@ def load_model_remote(model_name):
   model_dir = pathlib.Path(model_dir)/"saved_model"
   model = tf.saved_model.load(str(model_dir))
   model = model.signatures['serving_default']
-
+  
   return model  
 
 def run_inference_for_single_image(model, image):
@@ -72,38 +72,32 @@ def run_inference_for_single_image(model, image):
   return output_dict
 
 def show_inference(model, image):
-  # the array based representation of the image will be used later in order to prepare the
-  # result image with boxes and labels on it.
   image_np = np.array(image)
-  # Actual detection.
+
   output_dict = run_inference_for_single_image(model, image_np)
-    
-#   output = {
-#       "image": image_np,
-#       "output": output_dict
-#   }
+
   return output_dict  
 
 def get_predictions_from_url(model, image_url):
-    res = requests.get(image_url)
-    image = Image.open(BytesIO(res.content))
-    predictions = show_inference(model, image)
-    num = int(predictions["num_detections"])
-    
-    output_list = []
-    boxes = predictions["detection_boxes"].tolist()
-    scores = predictions["detection_scores"].tolist()
-    
-    for i in range(num):
-        output_list.append(
-            {
-                "label": category_index[predictions["detection_classes"][i]]["name"],
-                "box": boxes[i],
-                "score": scores[i]
-            }
-        )
-    result = {
-      "image_size": [image.width, image.height],
-      "predictions": output_list
-    }
-    return result
+  res = requests.get(image_url)
+  image = Image.open(BytesIO(res.content))
+  predictions = show_inference(model, image)
+  num = int(predictions["num_detections"])
+  
+  output_list = []
+  boxes = predictions["detection_boxes"].tolist()
+  scores = predictions["detection_scores"].tolist()
+  
+  for i in range(num):
+      output_list.append(
+          {
+              "label": category_index[predictions["detection_classes"][i]]["name"],
+              "box": boxes[i],
+              "score": scores[i]
+          }
+      )
+  result = {
+    "image_size": [image.width, image.height],
+    "predictions": output_list
+  }
+  return result

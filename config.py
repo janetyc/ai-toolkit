@@ -20,6 +20,8 @@ IMAGE_CLASSIFITER_MODELS = {
 }
 PATH_TO_LABELS = 'mscoco_label_map.pbtxt'
 
+#redis
+REDIS_URL = os.environ.get('REDIS_URL') or "redis://localhost:6379"
 class Config(object):
     DEBUG = False
     TESTING = False
@@ -32,7 +34,6 @@ class ProductionConfig(Config):
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or "postgresql://localhost/aitoolkit"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
-    
 
 class DevelopmentConfig(Config):
     DEBUG = True

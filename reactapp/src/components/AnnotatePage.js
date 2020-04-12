@@ -9,9 +9,10 @@ import useImage from 'use-image';
 
 import axios from "axios";
 
-async function getPredictionFromServer(image_url) {
+async function getPredictionFromServer(image_url, image_key) {
   let res = await axios.post(process.env.REACT_APP_API_URL+'/api/get_predictions_by_image_url', {
-    "image_url": image_url
+    "image_url": image_url,
+    "image_key": image_key
   });
   return res.data
 }
@@ -42,10 +43,10 @@ function AnnotatePage({ match }) {
 
   const projectId = match.params.pid;  
 
-  function makePrediction(image_url){
-    console.log("predict: "+ image_url);
+  function makePrediction(image_url, image_key){
+    
     setPredLoading(true);
-    getPredictionFromServer(image_url).then(res => {
+    getPredictionFromServer(image_url, image_key).then(res => {
       if(res["success"]){
         setPredictions(res["data"].predictions);
         setPredLoading(false);
@@ -61,15 +62,10 @@ function AnnotatePage({ match }) {
 
   function predict(e){
     e.preventDefault();
-    makePrediction(imagedata[currentIndex].image_url);
+    makePrediction(imagedata[currentIndex].image_url, imagedata[currentIndex].key);
   }
   function changeImg(e){
-    
     setCurrentIndex(e.item);
-    console.log(e.item);
-    console.log(refs.current[e.item].current.attrs.image.width);
-    console.log(refs.current[e.item].current.attrs.image.height);
-
     setPredictions([])
   }
 

@@ -7,13 +7,21 @@ from flask_cors import CORS, cross_origin
 import jinja2
 
 import pyrebase
+import redis
+from rq import Queue
 
-db = SQLAlchemy()
+from aitoolkit.ml_api import load_model_remote
 
 #setup firebase
 firebase = pyrebase.initialize_app(config.FIREBASE_CONFIG)
+auth = firebase.auth()
+#setup Redis Queue
 
 ml_models = {}
+ml_models["fasterRCNN_I"] = load_model_remote(config.IMAGE_CLASSIFITER_MODELS["FasterRCNN_Inceptionv2"])
+
+conn = redis.from_url(config.REDIS_URL)
+db = SQLAlchemy()
 
 # why we use application factories
 # http://flask.pocoo.org/docs/1.0/patterns/appfactories/#app-factories
@@ -24,7 +32,6 @@ def create_app():
     app = Flask(__name__, 
                 template_folder='static/build', 
                 static_folder='static/build/static')
-    
     
     # app = Flask(__name__)
     CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
@@ -53,23 +60,28 @@ def create_app():
     app.register_blueprint(views)
     app.register_blueprint(api)
 
-
     #load ml model_st
-    from aitoolkit.ml_api import load_model_remote
+    #from aitoolkit.ml_api import load_model_remote
     # ml_models["mobilenet"] = load_model(config.IMAGE_CLASSIFITER_MODELS["SSD_MobileNet_V2"])
-    ml_models["fasterRCNN_I"] = load_model_remote(config.IMAGE_CLASSIFITER_MODELS["FasterRCNN_Inceptionv2"])
+    
     #ml_models["fasterRCNN_R"] = load_model(config.IMAGE_CLASSIFITER_MODELS["FasterRCNN_ResNet"])
     #ml_models["maskRCNN"] = load_model(config.IMAGE_CLASSIFITER_MODELS["Mask_RCNN"])
 
+    
+    q = Queue('ml-task', connection=conn)
+    app.redis = conn
+    app.task_queue = q
+
+    
+    
+
     db.app = app
     db.init_app(app)
-
 
     with app.app_context():
         # Extensions like Flask-SQLAlchemy now know what the "current" app
         # is while within this block. Therefore, you can now run........
         db.create_all()
-
+        
     return app
-
 

@@ -120,3 +120,24 @@ class Task(db.Model):
     def __repr__(self):
         return '<Task %r>' % self.created_user
 
+
+class ImagePrediction(db.Model):
+    __tablename__ = 'imageprediction'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    model_name = db.Column(db.Text())
+    image_key = db.Column(db.Text())
+    image_url = db.Column(db.Text())
+    predictions = db.Column(db.JSON)
+    created_time = db.Column(db.DateTime())
+
+    def __init__(self, model_name, image_key, image_url, predictions):
+        self.model_name = model_name
+        self.image_key = image_key
+        self.image_url = image_url
+        self.predictions = predictions
+
+        self.created_time = datetime.utcnow()
+
+    def __repr__(self):
+        return 'ImagePrediction %r' % self.id

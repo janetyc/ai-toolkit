@@ -2,6 +2,7 @@ import json
 
 from aitoolkit.models import Project
 from aitoolkit.models import Image, ImageAnnotation
+from aitoolkit.models import ImagePrediction
 
 from aitoolkit.enum import DataType
 
@@ -31,6 +32,13 @@ class DBQuery(object):
         db.session.commit()
 
         return image_annotation.id
+
+    def add_machine_predictions(self, model_name, image_key, image_url, predictions):
+        image_prediction = ImagePrediction(model_name, image_key, image_url, predictions)
+        db.session.add(image_prediction)
+        db.session.commit()
+
+        return image_prediction.id
 
     # ************************************************** #
     #               Get data from database               #
@@ -76,6 +84,19 @@ class DBQuery(object):
 
         return image_data
     
+    def get_img_predictions_by_key(self, model_name, image_key):
+        predictions = ImagePrediction.query.filter_by(image_key=image_key, model_name=model_name).first()
+    
+        if predictions:
+            output = predictions.predictions
+            output = {
+                "image_size": output["image_size"],
+                "predictions": output["predictions"]
+            }
+            return output
+        else:
+            return None
+        
     # ************************************************** #
     #               Update data from database            #
     # ************************************************** #
