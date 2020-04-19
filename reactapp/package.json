@@ -6,7 +6,6 @@
   "dependencies": {
     "@emotion/core": "^10.0.22",
     "@emotion/styled": "^10.0.23",
-    "@mikecousins/react-pdf": "^5.3.1",
     "axios": "^0.19.0",
     "cuid": "^2.1.6",
     "konva": "^4.2.0",
@@ -22,6 +21,7 @@
     "react-scripts": "^3.4.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
+    "shortid": "^2.2.15",
     "use-image": "^1.0.5"
   },
   "scripts": {
