@@ -16,7 +16,7 @@ function ProjectsIndex() {
   }, []);
   
   return (
-    <Container> 
+    <Container>
       <Card.Group style={{ marginTop: '2em' }} itemsPerRow={4}>
         {data.map((item, indx) =>
           <Card key={indx} href={"/#/project/"+ item.id} >

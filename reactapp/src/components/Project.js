@@ -41,7 +41,11 @@ function Project({ match }) {
   return (
     <Container>
       <div style={{ marginTop: '2em' }}>
-        <Header as='h2'>Project: {data.title} <Button color="teal" as={Link} to={"/annotate/" + projectId}>Start to Annotate</Button></Header>
+        <Header as='h2'>Project: {data.title} 
+          {imagedata.length !== 0 && 
+            <Button style={ {marginLeft: "7px"} }  color="teal" as={Link} to={"/annotate/" + projectId}>Start to Annotate</Button>
+          }
+        </Header>
         <p>{data.description}</p>
       </div>
       

@@ -10,7 +10,6 @@ import useImage from 'use-image';
 
 import axios from "axios";
 
-
 async function getPredictionFromServer(image_url, image_key) {
   let res = await axios.post(process.env.REACT_APP_API_URL+'/api/get_predictions_by_image_url', {
     "image_url": image_url,
@@ -48,9 +47,8 @@ function AnnotatePage({ match }) {
   const [selectedBoxName, setSelectedBoxName] = useState("")
   const [mouseDown, setMouseDown] = useState(false);
 
-
   const refs = useRef([]);
-  const projectId = match.params.pid;  
+  const projectId = match.params.pid;
 
   function makePrediction(image_url, image_key){  
     setPredLoading(true);
@@ -72,6 +70,7 @@ function AnnotatePage({ match }) {
     e.preventDefault();
     makePrediction(imagedata[currentIndex].image_url, imagedata[currentIndex].key);
   }
+
   //------------------- handle human annotation ----------------------
   function addNewBox(e){
     e.preventDefault();
@@ -94,14 +93,11 @@ function AnnotatePage({ match }) {
     setBoxCount(boxCount + 1);
   }
   const handleRectChange = (index, newProps) => {
-    
     humanboxes[index] = {
       ...humanboxes[index],
       ...newProps,
-    };
-    
+    };    
     setHumanBoxes(humanboxes => [...humanboxes]);
-
   };
   // ---------------------------------------------------
   const changeImg = (i) => {
@@ -114,7 +110,7 @@ function AnnotatePage({ match }) {
     setLoadCount(loadCount+1); 
   }
 
-  const handleStageMouseDown = (event) => {    
+  const handleStageMouseDown = (event) => {
     
     // clicked on stage - clear selection or ready to generate new rectangle
     if (event.target.getType() === 'Stage') {
@@ -233,31 +229,6 @@ function AnnotatePage({ match }) {
           </div>
         </div>  
       )}
-
-      {/* {loaded && (
-        <AliceCarousel onSlideChanged={ changeImg }>
-          {imagedata.map( (item, i) => 
-            <Stage key={item.key} width={window.innerWidth*0.75} height={window.innerHeight*0.75} >
-              <Layer>                
-                <URLImage url={item.image_url} myRef={refs.current[i]} width={1024} height={600}/>
-              </Layer> 
-            </Stage>
-          )}
-        </AliceCarousel>
-      )} */}
-      {/* <Stage width={imgSize.w} height={imgSize.h}>
-      <Layer>
-        {predictions.length > 0 &&(
-          <Image image={refs.current[currentIndex].current.attrs.image} />
-        )}
-        {!predloading && predictions.map((box, idx) => 
-          <Group key={idx}>
-            <Rect x={box.box[1]*imgSize.w} y={box.box[0]*imgSize.h} width={(box.box[3]-box.box[1])*imgSize.w} height={ (box.box[2]-box.box[0])*imgSize.h} stroke={'#33d6ff'} strokeWidth={2} />
-            <Text x={box.box[1]*imgSize.w} y={box.box[0]*imgSize.h} fill={'#ccf5ff'} fontSize={20} text={box.label} />
-          </Group>  
-        )}  
-      </Layer>    
-      </Stage> */}
       
     </Container>
   )

@@ -13,6 +13,7 @@ import ProjectsIndex from './components/ProjectsIndex';
 import Project from './components/Project';
 import AddProject from './components/AddProject';
 import AnnotatePage from './components/AnnotatePage';
+import ObjectStoryMtask from './components/CrowdTasks/ObjectStoryMTask';
 
 const customHistory = createBrowserHistory();
 
@@ -28,6 +29,8 @@ export default (
             <Route path="/project/:pid" component={Project} />
             <Route path="/annotate/:pid" component={AnnotatePage} />
             <Route path="/addProject" component={AddProject} />
+            
+            <Route path="/annotateObjectStory/:imgid" component={ObjectStoryMtask} />
         </Switch>
     </Router>
 );

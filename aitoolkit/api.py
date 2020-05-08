@@ -69,6 +69,7 @@ def add_images():
                 }
             )
 
+        # update project image_list
         old_list = DBQuery().get_image_list_by_project_id(int(project_id))
         if old_list:
             old_list.extend(image_list)
@@ -128,6 +129,24 @@ def get_project_by_id():
     else:
         return jsonify(success=0, data=[], image_data=[])
 
+@api.route('/api/get_image_by_id', methods=('GET', 'POST'))
+def get_image_by_id():
+    if request.method == 'POST':
+        data = request.get_json()
+        image_id = data["image_id"]
+        image = DBQuery().get_image_by_id(int(image_id))
+        data = {
+            'image_id': image.id,
+            'project_id': image.project_id,
+            'image_key': image.image_key,
+            'image_url': image.image_url,
+        }
+
+        return jsonify(success=1, data=data)
+    else:
+        return jsonify(success=0, data={})
+
+# --------------------- not use ------------------------------- 
 @api.route('/api/add_prediction_task', methods=('GET', 'POST'))
 def add_prediction_task():
     if request.method == 'POST':

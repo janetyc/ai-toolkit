@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Rect } from 'react-konva';
 
-const MyRectangle = ( {x, y, width, height, name, stroke, onTransform} ) => {
+const MyRectangle = ( {x, y, width, height, name, stroke, onTransform, onEnter, onLeave} ) => {
 
   const rectRef = useRef();
 
@@ -40,18 +40,21 @@ const MyRectangle = ( {x, y, width, height, name, stroke, onTransform} ) => {
   };
   const handleMouseEnter = (event) => {
     const shape = event.target;
-    shape.stroke('#ff4d4d');
+    shape.stroke('#8AE1FF');
     shape.getStage().container().style.cursor = 'move';
     // this.rect.draw();
     rectRef.current.getLayer().draw();
+    onEnter(shape.name());
+    
   };
 
   const handleMouseLeave = (event) => {
     const shape = event.target;
-    shape.stroke('#cc0000');
+    shape.stroke('#2982F9');
     shape.getStage().container().style.cursor = 'crosshair';
     // this.rect.draw();
     rectRef.current.getLayer().draw();
+    onLeave(shape.name());
   };
 
   return (

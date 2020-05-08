@@ -34,3 +34,7 @@
   float: left;
   width: 70%;
 }
+
+.hoveredBox {
+  border: #8AE1FF 2px solid;
+}
