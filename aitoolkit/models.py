@@ -48,11 +48,12 @@ class Image(db.Model):
     def __repr__(self):
         return '<Image %r>' % self.id
 
-class ImageAnnotation(db.Model):
-    __tablename__ = 'imageannotation'
+class ObjectAnnotation(db.Model):
+    __tablename__ = 'objectannotation'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    img_id = db.Column(db.Integer)
+    image_id = db.Column(db.Integer)
+    story_id = db.Column(db.Integer)
     created_user = db.Column(db.Text())
 
     label = db.Column(db.Text())
@@ -61,12 +62,15 @@ class ImageAnnotation(db.Model):
     w = db.Column(db.Float)
     h = db.Column(db.Float)
 
+    verified_count = 0
+
     created_time = db.Column(db.DateTime())
     modified_time = db.Column(db.DateTime())
 
-    def __init__(self, created_user, img_id, label, x, y, w, h):
+    def __init__(self, created_user, image_id, story_id, label, x, y, w, h):
         self.created_user = created_user
-        self.img_id = img_id
+        self.image_id = image_id
+        self.story_id = story_id
         self.label = label
         self.x = x
         self.y = y
@@ -76,7 +80,32 @@ class ImageAnnotation(db.Model):
         self.created_time = datetime.utcnow()
 
     def __repr__(self):
-        return '<ImageAnnotation %r>' % self.id
+        return '<ObjectAnnotation %r>' % self.id
+
+class StoryAnnotation(db.Model):
+    __tablename__ = 'storyannotation'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    image_id = db.Column(db.Integer)
+    created_user = db.Column(db.Text())
+    description = db.Column(db.Text())
+    object_list = db.Column(JSON)
+
+    verified_count = 0
+
+    created_time = db.Column(db.DateTime())
+    modified_time = db.Column(db.DateTime())
+
+    def __init__(self, created_user, image_id, description):
+        self.created_user = created_user
+        self.image_id = image_id
+        self.description = description
+
+        self.created_time = datetime.utcnow()
+
+    def __repr__(self):
+        return '<StoryAnnotation %r>' % self.id
+
 
 # for crowdosurcing task
 class Task(db.Model):

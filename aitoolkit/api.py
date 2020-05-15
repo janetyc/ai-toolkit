@@ -86,6 +86,42 @@ def add_images():
     else:
         return jsonify(success=0, data=[])
 
+@api.route('/api/add_objectstory', methods=('GET', 'POST'))
+def add_objectstory():
+    if request.method == 'POST':
+        json_data = request.get_json()
+        created_user = json_data["created_user"]
+        image_id = json_data["image_id"]
+        story = json_data["story"]
+        object_list = json_data["object_list"]
+
+        # add story and objects into database
+        story_id = DBQuery().add_story_annotation(created_user, int(image_id), story)
+        obj_list = []
+        for obj in object_list:
+            obj_id = DBQuery().add_object_annotation(created_user, image_id, story_id, obj["label"], float(obj["x"]), float(obj["y"]), float(obj["w"]), float(obj["h"]))
+            obj_list.append(obj_id)
+
+        DBQuery().update_story_object_list(story_id, obj_list)
+
+        data = {
+            "story_id": story_id,
+            "object_list": obj_list
+        }
+        return jsonify(success=1, data=data)
+    else:
+        return jsonify(success=0, data=[])
+
+@api.route('/api/get_stories_by_image_id', methods=('GET', 'POST'))
+def get_stories_by_image_id():
+    if request.method == 'POST':
+        json_data = request.get_json()
+        image_id = json_data["image_id"]
+        stories = DBQuery().get_stories_by_image_id(image_id)
+
+        return jsonify(success=1, data=stories)
+    else:
+        return jsonify(success=0, data=[])
 
 @api.route('/api/get_all_projects', methods=('GET', 'POST'))
 def get_all_projects():
@@ -97,7 +133,6 @@ def get_all_projects():
             "title": project.title,
             "description": project.description
         })
-
 
     data = {
         "all_projects": projects
