@@ -10,7 +10,7 @@ import pyrebase
 import redis
 from rq import Queue
 
-from aitoolkit.ml_api import load_model_remote
+#from aitoolkit.ml_api import load_model_remote
 
 #setup firebase
 firebase = pyrebase.initialize_app(config.FIREBASE_CONFIG)
@@ -18,7 +18,7 @@ auth = firebase.auth()
 #setup Redis Queue
 
 ml_models = {}
-ml_models["fasterRCNN_I"] = load_model_remote(config.IMAGE_CLASSIFITER_MODELS["FasterRCNN_Inceptionv2"])
+#ml_models["fasterRCNN_I"] = load_model_remote(config.IMAGE_CLASSIFITER_MODELS["FasterRCNN_Inceptionv2"])
 
 conn = redis.from_url(config.REDIS_URL)
 db = SQLAlchemy()
@@ -63,17 +63,12 @@ def create_app():
     #load ml model_st
     #from aitoolkit.ml_api import load_model_remote
     # ml_models["mobilenet"] = load_model(config.IMAGE_CLASSIFITER_MODELS["SSD_MobileNet_V2"])
-    
     #ml_models["fasterRCNN_R"] = load_model(config.IMAGE_CLASSIFITER_MODELS["FasterRCNN_ResNet"])
     #ml_models["maskRCNN"] = load_model(config.IMAGE_CLASSIFITER_MODELS["Mask_RCNN"])
 
-    
-    q = Queue('ml-task', connection=conn)
-    app.redis = conn
-    app.task_queue = q
-
-    
-    
+    #q = Queue('ml-task', connection=conn)
+    #app.redis = conn
+    #app.task_queue = q
 
     db.app = app
     db.init_app(app)

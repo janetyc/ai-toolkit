@@ -228,19 +228,21 @@ def get_predictions_by_image_url():
                 }
                 DBQuery().add_machine_predictions(model_name, image_key, image_url, fire_data)
             else:
-                print("add into task queue")
-                current_app.task_queue.enqueue(run_prediction_task, firebase_db, model_name, image_url, image_key)
-                data = {
-                    "image_size": [0, 0],
-                    "image_url": image_url,
-                    "predictions": []
-                }
-
+                #print("add into task queue")
+                #current_app.task_queue.enqueue(run_prediction_task, firebase_db, model_name, image_url, image_key)
+                # data = {
+                #     "image_size": [0, 0],
+                #     "image_url": image_url,
+                #     "predictions": []
+                # }
+                print("nothing happen!!")
+        
         return jsonify(success=1, data=data)
     else:
         return jsonify(success=0, data=[])
 
 
+#run machine prediction and store results to firebase
 def run_prediction_task(f_db, model_name, image_url, img_key):
     result = get_predictions_from_url(ml_models[model_name], image_url)
     f_db.child("predictions").child(img_key).set(result)

@@ -70,9 +70,9 @@
 
 ## use [react-p5js](https://github.com/atorov/react-p5js)
 
-
-
 ## Development Logs
-- first setup for ai toolkit web application (2019.07.25)
-- flask backend + react frontend (use react-p5js) (2019.07.28)
+- remove ml model from the web server to avoid memory quota exceeded at heroku (2020.05.18)
+- object story interface (2020.05.15)
 - integrate Albert's frontend react (2019.11.02)
+- flask backend + react frontend (use react-p5js) (2019.07.28)
+- first setup for ai toolkit web application (2019.07.25)
