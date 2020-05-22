@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, createRef } from 'react';
-import { Container, Button, TextArea, Form, Grid, Input, Header, Label} from "semantic-ui-react";
+import { Container, Button, TextArea, Form, Grid, Input, Header, Label, Divider} from "semantic-ui-react";
 
 import { useForm, useFieldArray } from 'react-hook-form';
 
@@ -216,7 +216,7 @@ function ObjectStoryMtask({ match }) {
         
         {loaded &&
         <Grid celled>
-            
+            <Grid.Row>
             <img style={ {display: "none"} } src={imagedata.image_url} ref={imgRef} onLoad={ () => {imageLoad()}}/>
             <Grid.Column width={12} >
             {imageloaded &&
@@ -325,8 +325,26 @@ function ObjectStoryMtask({ match }) {
                 </Grid.Row>
                 }
               </Form>
-              
             </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={16}>
+              {storyData.map((story, i) => (
+                  <Grid.Row key={"story-"+i} >
+                    <div>Story {i+1}: {story.story}
+                    {story.object_list.map((object, j) => (
+                      <Label style={{ marginLeft: '3px'}} key={"obj-"+i+"-"+j} color={"grey"} mini>{object.label}</Label>
+                    ))}
+                    <Divider />
+                    </div>
+                    </Grid.Row>
+                  ))}
+              </Grid.Column>
+            </Grid.Row>
+            
+            
+            
+               
             
         </Grid>
         }

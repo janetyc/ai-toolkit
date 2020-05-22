@@ -9,7 +9,7 @@ async function fetchData(){
 }
 
 function ProjectsIndex() {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
   useEffect(()=> {   
     fetchData().then(setData);

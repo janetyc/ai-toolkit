@@ -112,6 +112,25 @@ def add_objectstory():
     else:
         return jsonify(success=0, data=[])
 
+@api.route('/api/delete_image_by_id', methods=('GET', 'POST'))
+def delete_image_by_id():
+    if request.method == 'POST':
+        #get image key
+        #delete data in the firebase database
+
+
+
+        #delete data in the db
+
+
+
+
+        return jsonify(success=1, data=[])
+    else:
+        return jsonify(success=0, data=[])
+
+
+
 @api.route('/api/get_stories_by_image_id', methods=('GET', 'POST'))
 def get_stories_by_image_id():
     if request.method == 'POST':
