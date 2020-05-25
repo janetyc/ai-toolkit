@@ -278,15 +278,19 @@ function ObjectStoryMtask({ match }) {
             <Grid.Column width={4}>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <Grid.Row>
-                <Header as='h5' block>Step 1: Tell a story</Header>
-                    <textarea placeholder='Tell us a story about this image' style={{ minHeight: 100 }} name="story" ref={register({ required: true })}/>
+                <Header as='h4' block>Step 1: Tell a story</Header>
+                    <div>Some <b>invisible people</b> (one or many) were doing something in this photo; however you cannot see them but only their traces.<br/><br/>
+                    Please speculate a possible story or scenario to describe <b>WHO</b> and <b>WHAT activity</b> are they doing.
+                    </div>
+                    <textarea placeholder='Tell us a story about this image' style={{ marginTop: '6px', minHeight: '50px' }} name="story" ref={register({ required: true })}/>
                     {errors.story && <Label pointing prompt>Story is required</Label>}
                     
                 </Grid.Row>
                 <Grid.Row style={{ marginTop: '2em'}}>
-                    <Header as='h5' block>Step 2: Identify key objects to define your story</Header>
+                    <Header as='h4' block>Step 2: Identify key objects</Header>
+                    <div>Please identify <b>key objects</b> that shape your your written story.</div>
                     
-                    <Button fluid color="blue" onClick={addNewBox} style={{ marginBottom: '6px'}}>Add An Object</Button>
+                    <Button fluid color="blue" onClick={addNewBox} style={{ marginTop: '6px', marginBottom: '6px'}}>Add An Object</Button>
                     
                     {humanboxes.map((rect, i) => (
                         <div key={rect.key} 
