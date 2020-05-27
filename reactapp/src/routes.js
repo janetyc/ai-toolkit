@@ -9,6 +9,7 @@ import { Menu, Button } from 'semantic-ui-react'
 import { createBrowserHistory } from "history";
 
 import './index.css';
+import Home from './components/Home';
 import ProjectsIndex from './components/ProjectsIndex';
 import Project from './components/Project';
 import AddProject from './components/AddProject';
@@ -21,12 +22,9 @@ const customHistory = createBrowserHistory();
 
 export default (
     <Router history={customHistory}>
-        <Menu>
-          <Menu.Item><Link to="/">Home</Link></Menu.Item>
-          <Menu.Item position='right'><Button color="teal" as={Link} to="/addProject">Add Project</Button></Menu.Item>
-        </Menu>
         <Switch>
-            <Route exact path="/" component={ProjectsIndex} />
+            <Route exact path="/" component={Home} />
+            <Route path="/dashboard" component={ProjectsIndex} />
             <Route path="/projects" component={ProjectsIndex} />
             <Route path="/project/:pid" component={Project} />
             <Route path="/annotate/:pid" component={AnnotatePage} />
@@ -34,7 +32,7 @@ export default (
             
             <Route path="/annotateObjectStory/:imgid" component={ObjectStoryMtask} />
 
-            <Route path="/dashboard" component={ProjectManagement} />
+            <Route path="/admin" component={ProjectManagement} />
         </Switch>
     </Router>
 );

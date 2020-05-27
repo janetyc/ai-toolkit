@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
-import { Container, Header, Button} from "semantic-ui-react";
+import { Link } from 'react-router-dom';
+import { Container, Header, Button, Menu} from "semantic-ui-react";
 import axios from "axios";
 
 import Uploader from './Uploader'
@@ -39,6 +39,11 @@ function Project({ match }) {
   }, []);
 
   return (
+    <div>
+    <Menu>
+        <Menu.Item><Link to="/dashboard">Home</Link></Menu.Item>
+        <Menu.Item position='right'><Button color="teal" as={Link} to="/addProject">Add Project</Button></Menu.Item>
+    </Menu>
     <Container>
       <div style={{ marginTop: '2em' }}>
         <Header as='h2'>Project: {data.title} 
@@ -55,9 +60,8 @@ function Project({ match }) {
       <div style={{ marginTop: '3em' }}>
         <ImageDataset imageList={imagedata} /> 
       </div>
-      
-
     </Container>
+    </div>
   );
 }
 

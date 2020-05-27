@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Item, Button, Card, Image} from "semantic-ui-react";
+import { Container, Item, Button, Card, Image, Menu} from "semantic-ui-react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
 
@@ -61,7 +61,13 @@ function ProjectManagement() {
   }, []);
   
   return (
-    <Container>
+    <div>    
+    <Menu>
+        <Menu.Item><Link to="/dashboard">Home</Link></Menu.Item>
+        <Menu.Item position='right'><Button color="teal" as={Link} to="/addProject">Add Project</Button></Menu.Item>
+    </Menu>
+    <Container>  
+      
       <Item.Group divided>
         {data.map((item, indx) =>
           <Item key={indx}>
@@ -89,6 +95,7 @@ function ProjectManagement() {
         )}
       </Item.Group>    
     </Container>
+    </div>
   )
 }
 export default ProjectManagement;

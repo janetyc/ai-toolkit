@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Card } from "semantic-ui-react";
+import { Container, Card, Menu, Button } from "semantic-ui-react";
+import { Link } from 'react-router-dom';
+
 import axios from "axios";
 
 async function fetchData(){
@@ -16,6 +18,11 @@ function ProjectsIndex() {
   }, []);
   
   return (
+    <div>
+    <Menu>
+        <Menu.Item><Link to="/dashboard">Home</Link></Menu.Item>
+        <Menu.Item position='right'><Button color="teal" as={Link} to="/addProject">Add Project</Button></Menu.Item>
+    </Menu>
     <Container>
       <Card.Group style={{ marginTop: '2em' }} itemsPerRow={4}>
         {data.map((item, indx) =>
@@ -28,6 +35,7 @@ function ProjectsIndex() {
         )}
       </Card.Group>    
     </Container>
+    </div>
   );
 }
 

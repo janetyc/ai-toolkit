@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, createRef } from 'react';
-import { Container, Button } from "semantic-ui-react";
+import { Container, Button, Menu } from "semantic-ui-react";
 
 import { Stage, Layer, Image, Text, Group } from 'react-konva';
 import MyRect from './MyRect';
@@ -164,6 +164,10 @@ function AnnotatePage({ match }) {
   }, []);
   
   return (
+    <div>
+    <Menu>
+      <Menu.Item>PickaObject</Menu.Item>
+    </Menu>
     <Container>
       <div>
         {loaded && imagedata.map( (item, i) => 
@@ -231,6 +235,7 @@ function AnnotatePage({ match }) {
       )}
       
     </Container>
+    </div>
   )
 }
 export default AnnotatePage;
