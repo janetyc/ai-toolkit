@@ -23,12 +23,12 @@ async function fetchImageData(imgId) {
   });
   return result.data
 }
-async function fetchStoryData(imgId) {
-  const result = await axios.post(process.env.REACT_APP_API_URL + '/api/get_stories_by_image_id', {
-    "image_id": imgId
-  });
-  return result.data
-}
+// async function fetchStoryData(imgId) {
+//   const result = await axios.post(process.env.REACT_APP_API_URL + '/api/get_stories_by_image_id', {
+//     "image_id": imgId
+//   });
+//   return result.data
+// }
 
 function ObjectStoryMtask({ match }) {
   const [imagedata, setImageData] = useState({});
@@ -199,17 +199,8 @@ function ObjectStoryMtask({ match }) {
         setImageData(res["data"]);
         setLoad(true);
     });
-    console.log("fetch image url");
+    
   }, []);
-
-  useEffect(()=> {
-    fetchStoryData(imageId).then(res => {
-        setStoryData(res["data"]);
-        console.log(res["data"]);
-        setStoryLoad(true);
-    });
-    console.log("fetch story data");
-  }, [])
   
   return (
     <div>
@@ -310,15 +301,6 @@ function ObjectStoryMtask({ match }) {
                               <i aria-hidden="true" className="remove circular inverted link icon" onClick={ ()=>removeObject(i)}></i>
                             </div>
                             
-                            {/* different style of delete button */}
-                            {/* <div className="ui action input" >
-                            <input placeholder={'object '+(i+1)} 
-                             name="object"
-                             ref={register({ required: true })}
-                            />
-                              <button className="ui icon button" onClick={ ()=>removeObject(i) }><i aria-hidden="true" className="invert remove icon"></i></button>
-                            </div> */}
-                            
                         </div>
                     ))}
                 
@@ -332,20 +314,6 @@ function ObjectStoryMtask({ match }) {
                 }
               </Form>
             </Grid.Column>
-            </Grid.Row>
-            <Grid.Row>
-              <Grid.Column width={16}>
-              {storyData.map((story, i) => (
-                  <Grid.Row key={"story-"+i} >
-                    <div>Story {i+1}: {story.story}
-                    {story.object_list.map((object, j) => (
-                      <Label style={{ marginLeft: '3px'}} key={"obj-"+i+"-"+j} color={"grey"} mini>{object.label}</Label>
-                    ))}
-                    <Divider />
-                    </div>
-                    </Grid.Row>
-                  ))}
-              </Grid.Column>
             </Grid.Row>
         </Grid>
         }

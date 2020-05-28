@@ -12,7 +12,13 @@ const ImageDataset = ({ imageList }) => {
             <Card.Content>
             <Image src={item.image_url} />
             </Card.Content>
-            <Card.Content extra><Button attached='bottom' as={Link} to={"/annotateObjectStory/" + item.id}>Tell a Story</Button></Card.Content>
+            <Card.Content extra>
+              <Button.Group attached='bottom' >
+                <Button basic color="grey" as={Link} to={"/annotateObjectStory/" + item.id}>Tell</Button>
+                <Button basic color="grey" as={Link} to={"/objectStory/" + item.id}>See</Button>
+              </Button.Group>
+              
+            </Card.Content>
           </Card>
         )}
       </Card.Group>

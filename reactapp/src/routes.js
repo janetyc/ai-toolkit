@@ -5,7 +5,7 @@ import {
     Link,
     Route
 } from 'react-router-dom';
-import { Menu, Button } from 'semantic-ui-react'
+// import { Menu, Button } from 'semantic-ui-react';
 import { createBrowserHistory } from "history";
 
 import './index.css';
@@ -15,6 +15,7 @@ import Project from './components/Project';
 import AddProject from './components/AddProject';
 import AnnotatePage from './components/AnnotatePage';
 import ObjectStoryMtask from './components/CrowdTasks/ObjectStoryMTask';
+import ObjectStoryView from './components/ObjectStoryView';
 
 import ProjectManagement from './components/Dashboard/ProjectManagement';
 
@@ -31,7 +32,7 @@ export default (
             <Route path="/addProject" component={AddProject} />
             
             <Route path="/annotateObjectStory/:imgid" component={ObjectStoryMtask} />
-
+            <Route path="/objectStory/:imgid" component={ObjectStoryView} />
             <Route path="/admin" component={ProjectManagement} />
         </Switch>
     </Router>
