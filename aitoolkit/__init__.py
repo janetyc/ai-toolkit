@@ -23,6 +23,16 @@ ml_models = {}
 conn = redis.from_url(config.REDIS_URL)
 db = SQLAlchemy()
 
+class ReverseProxied(object):
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        scheme = environ.get('HTTP_X_FORWARDED_PROTO')
+        if scheme:
+            environ['wsgi.url_scheme'] = scheme
+        return self.app(environ, start_response)
+
 # why we use application factories
 # http://flask.pocoo.org/docs/1.0/patterns/appfactories/#app-factories
 def create_app():
@@ -35,9 +45,10 @@ def create_app():
     
     # app = Flask(__name__)
     CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
-    
+    app.wsgi_app = ReverseProxied(app.wsgi_app) #for proxied
+
     # for disalbe warning about AVX2
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+    # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
     
     env = os.getenv('ENV')
 

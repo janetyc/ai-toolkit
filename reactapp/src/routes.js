@@ -18,6 +18,7 @@ import ObjectStoryMtask from './components/CrowdTasks/ObjectStoryMTask';
 import ObjectStoryView from './components/ObjectStoryView';
 
 import ProjectManagement from './components/Dashboard/ProjectManagement';
+import MturkComplete from './components/CrowdTasks/MturkComplete';
 
 const customHistory = createBrowserHistory();
 
@@ -34,6 +35,9 @@ export default (
             <Route path="/annotateObjectStory/:imgid" component={ObjectStoryMtask} />
             <Route path="/objectStory/:imgid" component={ObjectStoryView} />
             <Route path="/admin" component={ProjectManagement} />
+
+            <Route path="/mturk" component={Home} />
+            <Route path="/mturksuccess" component={MturkComplete} />
         </Switch>
     </Router>
 );

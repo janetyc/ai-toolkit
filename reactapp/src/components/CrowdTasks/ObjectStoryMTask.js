@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef, createRef } from 'react';
 import { Container, Button, TextArea, Form, Grid, Input, Header, Label, Divider, Menu} from "semantic-ui-react";
 
+import { useHistory } from "react-router-dom";
+
 import { useForm, useFieldArray } from 'react-hook-form';
 
 import { Stage, Layer, Image, Rect} from 'react-konva';
@@ -10,6 +12,7 @@ import '../../App.css';
 
 import axios from "axios";
 import shortid from 'shortid';
+
 
 
 async function addObjectStoryToServer(data) {
@@ -50,6 +53,8 @@ function ObjectStoryMtask({ match }) {
   const [selectedBoxName, setSelectedBoxName] = useState("");
   const [hoverBoxName, setHoverBoxName] = useState("");
   const [mouseDown, setMouseDown] = useState(false);
+
+  const history = useHistory();
 
   const imageId = match.params.imgid;
   const [worker, setWorker] = useState("");
@@ -97,6 +102,10 @@ function ObjectStoryMtask({ match }) {
       setPostSuccess(true);
       e.target.reset();
       setHumanBoxes([]);
+      if (window.location.hash.split('?')[1]){
+        history.push("/mturksuccess?"+window.location.hash.split('?')[1]);
+      }
+      
     });
   };
 
@@ -207,6 +216,7 @@ function ObjectStoryMtask({ match }) {
     <Menu>
       <Menu.Item>PickaObject</Menu.Item>
     </Menu>
+    
     <Container>
         {loaded &&
         <Grid celled>
