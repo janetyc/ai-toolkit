@@ -15,5 +15,5 @@ def objectstory_workflow_hit(image_id, hit_type, num_of_assignments, **kwargs):
 
 
 if __name__ == "__main__":
-    h_id = objectstory_workflow_hit(23, HITType.OBJECTSTORY.value, 1)
+    h_id = objectstory_workflow_hit(25, HITType.OBJECTSTORY.value, 1)
     print(h_id)

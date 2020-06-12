@@ -45,67 +45,43 @@ def get_all_reviewable_hits(page_size=100):
 def show_assignments(hit_id):    
     assignments = get_assignments(hit_id)
     print("====== show assignments ======")
-    for i,assignment in enumerate(assignments):
+    for i, assignment in enumerate(assignments):
         print("assign #%i" % i)
         show_assignment(assignment)
         print("---------------")
 
 def show_assignment(assignment):
     print("Assignment:")
-    print("id: %s" % assignment.AssignmentId)
-    print("WorkerId: %s" % assignment.WorkerId)
-    print("HITId: %s" % assignment.HITId)
-    print("status: %s" % assignment.AssignmentStatus)
-    print("accept time: %s" % assignment.AcceptTime)
-    print("submit time: %s" % assignment.SubmitTime)
-
-    for question_form_answer in assignment.answers[0]:
-        field_id = question_form_answer.qid
-        field_value = question_form_answer.fields
-        print(field_id)
-        print(field_value)
+    print(assignment)
+    print("id: %s" % assignment["AssignmentId"])
+    print("WorkerId: %s" % assignment["WorkerId"])
+    print("HITId: %s" % assignment["HITId"])
+    print("status: %s" % assignment["AssignmentStatus"])
+    print("accept time: %s" % assignment["AcceptTime"])
+    print("submit time: %s" % assignment["SubmitTime"])
+    print("Answer: %s" % assignment["Answer"])
 
     return assignment
 
 def show_hit(hit):
     print("====== show hit ======")
-    print("hit id: %s" % hit.HITId)
-    print("has expired: %s" % hit.expired)
-    print("title: %s" % hit.Title)
-    print("annotation: %s" % hit.RequesterAnnotation)
-    print("status: %s" % hit.HITStatus)
-    print("review status: %s" % hit.HITReviewStatus)
+    print("hit id: %s" % hit["HITId"])
+    print("expiration: %s" % hit["Expiration"])
+    print("title: %s" % hit["Title"])
+    print("status: %s" % hit["HITStatus"])
+    print("review status: %s" % hit["HITReviewStatus"])
     
-    show_assignments(hit.HITId)
+    show_assignments(hit["HITId"])
     print("------")
 
 def get_hit(hit_id):
-    hit = mtc.get_hit(hit_id)[0]
+    hit = mtc.get_hit(HITId=hit_id)['HIT']
     return hit
 
 def get_assignments(hit_id):
+    assignments = mtc.list_assignments_for_hit(HITId=hit_id)
     
-    page_num = 1
-    assignments = []
-    while True:
-        new_assignments = mtc.get_assignments(hit_id, page_number=page_num)
-
-        total_num = int(new_assignments.TotalNumResults)
-        num = int(new_assignments.NumResults)
-        page_num = int(new_assignments.PageNumber)
-
-        print("total num: %d" % total_num)
-        print("num results: %d" % num)
-        print("page number: %d" % page_num)
-        
-        if num > 0:
-            page_num = page_num + 1
-            assignments.extend(new_assignments)
-        else:
-            break
-        
-    
-    return assignments
+    return assignments['Assignments']
 
 def get_assignment(assignment_id):
     assignment = mtc.get_assignment(assignment_id)
@@ -127,16 +103,17 @@ def approve_rejected_assignment(assignment_id, feedback=None):
     print("approve rejected assignment - %s" % assignment_id)
 
 def approve_hit(hit_id):
-    assignments = mtc.get_assignments(hit_id)
+    assignments = get_assignments(hit_id)
     for assignment in assignments:
-        approve = approve_assignment(assignment.AssignmentId)
+        approve = approve_assignment(assignment["AssignmentId"])
 
     print("finish approving hit - %s" % hit_id)
 
 def approve_assignment(assignment_id):
-    approve = mtc.approve_assignment(assignment_id)
+    approve = mtc.approve_assignment(AssignmentId=assignment_id)
     print("approve assignment - %s" % assignment_id)
 
+# need to modify
 def save_data(hit_id):
     hit = get_hit(hit_id)
     assignments = get_assignments(hit_id)
@@ -169,6 +146,7 @@ if __name__ == "__main__":
         print("python manage_hit.py get_all_hits")
         print("python manage_hit.py show_assignment assignment_id")
         print("python manage_hit.py unreject assignment_id")
+        print("python manage_hit.py expire_hit hit_id")
         print("python manage_hit.py delete_hit hit_id")
         print("python manage_hit.py show_hit hit_id")
 

@@ -52,7 +52,8 @@ frame_height = 800 # the height of the iframe holding the external hit
 
 
 def create_objectstory_hit(image_id, hit_type, num_of_assignments=max_assignments, **kwargs):
-    URL = '%s/#/annotateObjectStory/%s?using_sandbox=%s' % (HOST_SERVER, image_id, str.lower(str(SANDBOX)))
+    # URL = '%s/#/annotateObjectStory/%s?using_sandbox=%s' % (HOST_SERVER, image_id, str.lower(str(SANDBOX)))
+    URL = '%s/#/?image_id=%s&using_sandbox=%s' % (HOST_SERVER, image_id, str.lower(str(SANDBOX)))
     hit_id = create_hit(hit_type, URL, num_of_assignments)
 
     return hit_id

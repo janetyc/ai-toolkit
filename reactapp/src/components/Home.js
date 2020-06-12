@@ -1,16 +1,29 @@
 import React from 'react'
-import { Container, Item, Image, Label, Divider } from 'semantic-ui-react'
+import { Container, Item, Image, Label, Divider, Button } from 'semantic-ui-react'
+import { Link } from 'react-router-dom';
+import queryString from 'query-string';
+
 import logo from '../img/logo.png'
 import objectstory1 from '../img/objectstory-1.png'
 import objectstory2 from '../img/objectstory-2.png'
 
+
 function Home() {
+  const urlparams = window.location.hash.split('?')[1];
+  const values = queryString.parse(urlparams);
+
   return (
     <Container>
       <div align='center' style={{marginTop: "30px"}}>
-        <Image src={logo} />
+        <Image src={logo} />        
       </div>
       <Divider />
+      <div style={{textAlign: "center", marginTop: "10px"}}>
+      {'workerId' in values && 'assignmentId' in values && 'image_id' in values && (
+        <Button size="large" fluid color="teal" as={Link} to={"/annotateObjectStory/" + values.image_id + "?"+urlparams}>Start to Tell a Object Story!</Button>
+      )}
+      </div>
+      
       <Item.Group divided>
         <Item>
           <Item.Content>

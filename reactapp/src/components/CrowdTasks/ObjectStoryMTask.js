@@ -102,10 +102,10 @@ function ObjectStoryMtask({ match }) {
       setPostSuccess(true);
       e.target.reset();
       setHumanBoxes([]);
+
       if (window.location.hash.split('?')[1]){
         history.push("/mturksuccess?"+window.location.hash.split('?')[1]);
       }
-      
     });
   };
 

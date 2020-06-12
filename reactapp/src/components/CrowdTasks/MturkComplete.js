@@ -1,39 +1,33 @@
 import React from 'react'
 import { Form, Button} from "semantic-ui-react";
 import queryString from 'query-string';
-import axios from "axios";
-
-async function submitToMturkServer(serverURL, data) {
-    let result = await axios.post(serverURL, data);
-    return result
-}
+import { Link } from 'react-router-dom';
 
 function MturkComplete() {
   const urlparams = window.location.hash.split('?')[1];
+  const values = queryString.parse(urlparams);
 
-  function handleMturkSubmit(e) {
-    e.preventDefault();
-    const values = queryString.parse(urlparams);
-    const data = {
-        "assignmentId": values.assignmentId,
-        "workerId": values.workerId,
-        "hitId": values.hitId
-    }
-
-    if("using_sandbox" in values){
-        if(values.using_sandbox = "true"){        
-            submitToMturkServer("https://workersandbox.mturk.com/mturk/externalSubmit", data);
-        }else if(values.using_sandbox = "false"){
-            submitToMturkServer("https://www.mturk.com/mturk/externalSubmit", data);
-        }
-    }
-
-  }  
   return (
-    <div>
-        <Form onSubmit={handleMturkSubmit}>
-            <Button>Complete</Button>
-        </Form>     
+    <div style={{textAlign: "center", marginTop: "50px"}}>
+        {"using_sandbox" in values && values.using_sandbox == "true" && (
+            <form action="https://workersandbox.mturk.com/mturk/externalSubmit" method="post">
+                <input type="hidden" id="assignmentId" name="assignmentId" value={values.assignmentId}/>
+                <input type="hidden" id="hitId" name="hitId" value={values.hitId} />
+                <input type="hidden" id="workerId" name="workerId" value={values.workerId}/>
+                <Button>Complete HIT</Button>
+            </form>     
+        )}
+        {"using_sandbox" in values && values.using_sandbox == "false" && (
+            <form action="https://www.mturk.com/mturk/externalSubmit" method="post">
+                <input type="hidden" id="assignmentId" name="assignmentId" value={values.assignmentId} />
+                <input type="hidden" id="hitId" name="hitId" value={values.hitId} />
+                <input type="hidden" id="workerId" name="workerId" value={values.workerId} />
+                <Button>Complete HIT</Button>
+            </form>       
+        )}
+        {!("workerId" in values) && !("assignmentId" in values) && (
+            <Button basic color="grey" as={Link} to={"/"}>Back to Home</Button>
+        )}
     </div>
   )
 }
