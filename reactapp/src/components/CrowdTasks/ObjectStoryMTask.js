@@ -217,7 +217,7 @@ function ObjectStoryMtask({ match }) {
       <Menu.Item>PickaObject</Menu.Item>
     </Menu>
     
-    <Container>
+    <Container style={{minWidth: 1100}}>
         {loaded &&
         <Grid celled>
             <Grid.Row>
