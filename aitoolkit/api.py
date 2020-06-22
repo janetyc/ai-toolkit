@@ -69,6 +69,8 @@ def add_images():
                 }
             )
 
+
+        # ----------------- remove the following code  ---------------- #
         # update project image_list
         old_list = DBQuery().get_image_list_by_project_id(int(project_id))
         if old_list:
@@ -76,12 +78,14 @@ def add_images():
         else:
             old_list = []
         
+        # not working
         DBQuery().update_image_list_by_project_id(project_id, old_list)
 
         data = {
             "images": image_list
         }
-
+        # ------------------------------------------------------------- #
+         
         return jsonify(success=1, data=data)
     else:
         return jsonify(success=0, data=[])
@@ -102,6 +106,7 @@ def add_objectstory():
             obj_id = DBQuery().add_object_annotation(created_user, image_id, story_id, obj["label"], float(obj["x"]), float(obj["y"]), float(obj["w"]), float(obj["h"]))
             obj_list.append(obj_id)
 
+        # not working
         DBQuery().update_story_object_list(story_id, obj_list)
 
         data = {

@@ -34,7 +34,7 @@ description_set = dict({
 })
 
 price_set = dict({
-    HITType.OBJECTSTORY.value: 0.8
+    HITType.OBJECTSTORY.value: 0.07
 })
 
 keywords_set = dict({
@@ -42,7 +42,7 @@ keywords_set = dict({
 })
 
 duration = 60 * 120
-max_assignments = 1
+max_assignments = 3
 lifetime = 60 * 60 * 24 * 7
 approval_delay = 60 * 60 * 24 * 14  # auto approve, two weeks
 approve_requirement = 95

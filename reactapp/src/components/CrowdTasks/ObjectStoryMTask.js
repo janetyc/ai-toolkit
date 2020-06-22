@@ -12,7 +12,7 @@ import '../../App.css';
 
 import axios from "axios";
 import shortid from 'shortid';
-
+import queryString from 'query-string';
 
 
 async function addObjectStoryToServer(data) {
@@ -57,8 +57,9 @@ function ObjectStoryMtask({ match }) {
   const history = useHistory();
 
   const imageId = match.params.imgid;
-  const [worker, setWorker] = useState("");
-
+  const urlparams = window.location.hash.split('?')[1];
+  const values = queryString.parse(urlparams);
+  const workerId = "";
   const imageW = 800;
 
   const imageLoad = () => {
@@ -82,8 +83,13 @@ function ObjectStoryMtask({ match }) {
   const onSubmit = (data, e) => {
     const object_list = [];
     const imageH = imgRef.current.height*(imageW/imgRef.current.width);
+    if("workerId" in values){
+      workerId = values.workerId;
+    }else{
+      workerId = "";
+    }
+
     data.object.map((item, index) => {
-      
       object_list.push({
         "label": item.name,
         "x": humanboxes[index].x/imageW,
@@ -92,8 +98,9 @@ function ObjectStoryMtask({ match }) {
         "h": humanboxes[index].height/imageH
       });
     });
+
     const results = {
-      "created_user": worker,
+      "created_user": workerId,
       "image_id": imageId,
       "story": data.story,
       "object_list": object_list
@@ -103,8 +110,8 @@ function ObjectStoryMtask({ match }) {
       e.target.reset();
       setHumanBoxes([]);
 
-      if (window.location.hash.split('?')[1]){
-        history.push("/mturksuccess?"+window.location.hash.split('?')[1]);
+      if (urlparams){
+        history.push("/mturksuccess?"+urlparams);
       }
     });
   };
