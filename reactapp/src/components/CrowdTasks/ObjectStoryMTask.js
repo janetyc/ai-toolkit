@@ -53,13 +53,14 @@ function ObjectStoryMtask({ match }) {
   const [selectedBoxName, setSelectedBoxName] = useState("");
   const [hoverBoxName, setHoverBoxName] = useState("");
   const [mouseDown, setMouseDown] = useState(false);
-
+  const [worker, setWorker] = useState("");
+  
   const history = useHistory();
 
   const imageId = match.params.imgid;
   const urlparams = window.location.hash.split('?')[1];
   const values = queryString.parse(urlparams);
-  const workerId = "";
+  
   const imageW = 800;
 
   const imageLoad = () => {
@@ -83,11 +84,6 @@ function ObjectStoryMtask({ match }) {
   const onSubmit = (data, e) => {
     const object_list = [];
     const imageH = imgRef.current.height*(imageW/imgRef.current.width);
-    if("workerId" in values){
-      workerId = values.workerId;
-    }else{
-      workerId = "";
-    }
 
     data.object.map((item, index) => {
       object_list.push({
@@ -100,7 +96,7 @@ function ObjectStoryMtask({ match }) {
     });
 
     const results = {
-      "created_user": workerId,
+      "created_user": worker,
       "image_id": imageId,
       "story": data.story,
       "object_list": object_list
@@ -215,6 +211,10 @@ function ObjectStoryMtask({ match }) {
         setImageData(res["data"]);
         setLoad(true);
     });
+
+    if("workerId" in values){
+      setWorker(values.workerId);
+    }
     
   }, []);
   

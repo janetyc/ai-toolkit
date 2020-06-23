@@ -138,10 +138,12 @@ class DBQuery(object):
     # ************************************************** #
     def update_image_list_by_project_id(self, project_id, image_list):
         project = Project.query.filter_by(id=project_id).update({"image_list": image_list})
+        db.session.commit()
 
         return project
 
     def update_story_object_list(self, story_id, object_list):
         story = StoryAnnotation.query.filter_by(id=story_id).update({"object_list": object_list})
+        db.session.commit()
 
         return story    

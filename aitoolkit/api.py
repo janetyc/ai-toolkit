@@ -106,8 +106,7 @@ def add_objectstory():
             obj_id = DBQuery().add_object_annotation(created_user, image_id, story_id, obj["label"], float(obj["x"]), float(obj["y"]), float(obj["w"]), float(obj["h"]))
             obj_list.append(obj_id)
 
-        # not working
-        DBQuery().update_story_object_list(story_id, obj_list)
+        DBQuery().update_story_object_list(story_id, json.dumps(obj_list))
 
         data = {
             "story_id": story_id,
@@ -126,7 +125,6 @@ def delete_image_by_id():
 
 
         #delete data in the db
-
 
 
 
