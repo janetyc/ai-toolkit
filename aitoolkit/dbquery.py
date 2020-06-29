@@ -11,7 +11,7 @@ from aitoolkit import db
 
 class DBQuery(object):
     # ************************************************** #
-    #               Add data from database               #
+    #               Add data into database               #
     # ************************************************** #
     def add_project(self, created_user, title, description):
         project = Project(created_user, title, description)
@@ -47,6 +47,15 @@ class DBQuery(object):
         db.session.commit()
 
         return image_prediction.id
+
+    # task
+    def add_task(self, created_user, task_type, problem, answer, duration_time, verified_string, status, worker_id, hit_id, assignment_id):
+        task = Task(created_user, task_type, problem, answer, duration_time, verified_string, status, worker_id, hit_id, assignment_id)
+        db.session.add(task)
+        db.session.commit()
+
+        return task.id
+
 
     # ************************************************** #
     #               Get data from database               #
@@ -113,6 +122,7 @@ class DBQuery(object):
             story_object_list = self.get_objects_by_story_id(story.id)
             data = {
                 "id": story.id,
+                "created_user": story.created_user,
                 "story": story_description,
                 "object_list": story_object_list
             }

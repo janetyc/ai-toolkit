@@ -42,13 +42,12 @@ keywords_set = dict({
 })
 
 duration = 60 * 120
-max_assignments = 3
+max_assignments = 1
 lifetime = 60 * 60 * 24 * 7
 approval_delay = 60 * 60 * 24 * 14  # auto approve, two weeks
 approve_requirement = 95
 approve_num_hit = 100
 frame_height = 800 # the height of the iframe holding the external hit
-
 
 
 def create_objectstory_hit(image_id, hit_type, num_of_assignments=max_assignments, **kwargs):

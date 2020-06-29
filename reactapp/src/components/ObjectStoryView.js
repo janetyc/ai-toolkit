@@ -138,7 +138,7 @@ function ObjectStoryView({ match }) {
                         onMouseLeave={()=> {
                             handleLabelMouseLeave(i);}}
                     >
-                        Story {i+1}: {story.story}
+                        Story {i+1} ({story.created_user}): {story.story}
                         {story.object_list.map((object, j) => (
                         <Label style={{ marginLeft: '3px'}} key={"obj-"+i+"-"+j} color={"grey"} size="small" >{object.label}</Label>
                         ))}

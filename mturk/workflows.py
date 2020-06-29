@@ -13,10 +13,9 @@ def objectstory_workflow_hit(image_id, hit_type, num_of_assignments, **kwargs):
     
     return hit_id
 
-
 if __name__ == "__main__":
     image_ids = [4, 5]
-    for img_id in image_ids:
+    for img_id in range(66, 85):
         h_id = objectstory_workflow_hit(img_id, HITType.OBJECTSTORY.value, 2)
         print(h_id)
     
